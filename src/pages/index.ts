@@ -1,0 +1,8 @@
+export { HomePage } from './HomePage';
+export { CoursePage } from './CoursePage';
+export { CoachingPage } from './CoachingPage';
+export { BookPage } from './BookPage';
+export { AboutPage } from './AboutPage';
+export { ConnectPage } from './ConnectPage';
+export { JournalPage } from './JournalPage';
+export { SpeakerKitPage } from './SpeakerKitPage';
