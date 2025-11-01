@@ -100,13 +100,13 @@ export const BalanceSection = () => {
               "When you master the BALANCE Framework™, you stop choosing between power and authenticity."
             </p>
           </div>
-          <a
+          {/* <a
             href="/connect"
             // href="/coaching" // Hidden - uncomment to link to coaching page instead
             className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             Experience BALANCE in Coaching
-          </a>
+          </a> */} {/* Hidden - uncomment to show "Experience BALANCE in Coaching" button */}
         </div>
       </div>
     </section>

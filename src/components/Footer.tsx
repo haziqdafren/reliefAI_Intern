@@ -26,28 +26,23 @@ export const Footer = () => {
 
           {/* RIGHT SIDE - Navigation and Social */}
           <div className="md:col-span-7 flex flex-col justify-between h-full">
-            {/* Navigation Links - Two columns like Jillian's design */}
+            {/* Navigation Links - Single column since many items are hidden */}
             <div className="flex justify-end pr-8">
-              <div className="grid grid-cols-2 gap-x-24 items-start">
-                {/* Left column */}
-                <div className="text-left">
-                  <a href="/about" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">About</a>
-                  {/* <a href="/coaching" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Coaching</a> */} {/* Hidden - uncomment to show coaching link */}
-                  {/* <a href="/course" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Course</a> */} {/* Hidden - uncomment to show course link */}
-                  <a href="/contact" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed">Contact</a>
-                </div>
-                {/* Right column */}
-                <div className="text-left">
-                  <a href="/book" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Book</a>
-                  <a href="/journal" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Journal</a>
-                  <a href="/speaker-kit" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Speaker Kit</a>
-                  <button
-                    onClick={() => setIsLoginModalOpen(true)}
-                    className="block text-sm text-text-secondary hover:text-primary-400 transition-colors text-left leading-relaxed"
-                  >
-                    Login
-                  </button>
-                </div>
+              <div className="text-left">
+                <a href="/about" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">About</a>
+                <a href="/book" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Book</a>
+                <a href="/connect" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed">Connect</a>
+                {/* Hidden items - uncomment to show */}
+                {/* <a href="/coaching" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Coaching</a> */}
+                {/* <a href="/course" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Course</a> */}
+                {/* <a href="/journal" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Journal</a> */}
+                {/* <a href="/speaker-kit" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Speaker Kit</a> */}
+                {/* <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="block text-sm text-text-secondary hover:text-primary-400 transition-colors text-left leading-relaxed"
+                >
+                  Login
+                </button> */}
               </div>
             </div>
 

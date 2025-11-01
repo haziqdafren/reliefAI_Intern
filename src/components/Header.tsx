@@ -42,14 +42,14 @@ export const Header = () => {
               </Link>
             </li>
           ))}
-          <li>
+          {/* <li>
             <button
               onClick={() => setIsLoginModalOpen(true)}
               className="bg-text-primary text-primary-100 font-corporate font-bold text-xs px-6 py-2 rounded-sm hover:bg-primary-400 hover:text-white transition-all duration-300 uppercase tracking-wider"
             >
               Log In
             </button>
-          </li>
+          </li> */} {/* Hidden - uncomment to show login button */}
         </ul>
 
         {/* Mobile Menu Button */}
@@ -77,7 +77,7 @@ export const Header = () => {
               {item.label}
             </Link>
           ))}
-          <button
+          {/* <button
             onClick={() => {
               setIsLoginModalOpen(true);
               setIsMobileMenuOpen(false);
@@ -85,7 +85,7 @@ export const Header = () => {
             className="bg-primary-400 text-white font-corporate font-medium text-lg px-8 py-3 rounded-full hover:bg-primary-500 transition-all duration-300 uppercase tracking-wider"
           >
             Log In
-          </button>
+          </button> */} {/* Hidden - uncomment to show login button */}
         </div>
       </div>
 
