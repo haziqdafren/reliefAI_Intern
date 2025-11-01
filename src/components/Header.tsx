@@ -17,7 +17,7 @@ export const Header = () => {
     // { path: '/coaching', label: 'Coach' }, // Hidden - uncomment to show coaching link
     // { path: '/course', label: 'Course' }, // Hidden - uncomment to show course link
     { path: '/connect', label: 'Connect' }
-  ];
+  ]; // Navigation items - coaching and course are hidden but can be re-enabled
   
   return (
     <header className={`fixed w-full z-50 backdrop-blur-glass bg-primary-100/90 py-4 md:py-6 transition-all duration-300 ${
