@@ -101,7 +101,8 @@ export const BalanceSection = () => {
             </p>
           </div>
           <a
-            href="/coaching"
+            href="/connect"
+            // href="/coaching" // Hidden - uncomment to link to coaching page instead
             className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             Experience BALANCE in Coaching

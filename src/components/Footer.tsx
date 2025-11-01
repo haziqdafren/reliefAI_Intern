@@ -32,8 +32,8 @@ export const Footer = () => {
                 {/* Left column */}
                 <div className="text-left">
                   <a href="/about" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">About</a>
-                  <a href="/coaching" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Coaching</a>
-                  <a href="/course" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Course</a>
+                  {/* <a href="/coaching" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Coaching</a> */} {/* Hidden - uncomment to show coaching link */}
+                  {/* <a href="/course" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Course</a> */} {/* Hidden - uncomment to show course link */}
                   <a href="/contact" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed">Contact</a>
                 </div>
                 {/* Right column */}

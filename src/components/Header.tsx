@@ -14,8 +14,8 @@ export const Header = () => {
   const navItems = [
     { path: '/about', label: 'About' },
     { path: '/book', label: 'Book' },
-    { path: '/coaching', label: 'Coach' },
-    { path: '/course', label: 'Course' },
+    // { path: '/coaching', label: 'Coach' }, // Hidden - uncomment to show coaching link
+    // { path: '/course', label: 'Course' }, // Hidden - uncomment to show course link
     { path: '/connect', label: 'Connect' }
   ];
   

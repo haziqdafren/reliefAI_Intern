@@ -4,8 +4,8 @@ import { Header, NewsletterBanner, Footer, ScrollToTop } from './components';
 import { NewsletterProvider } from './contexts/NewsletterContext';
 import {
   HomePage,
-  CoursePage,
-  CoachingPage,
+  // CoachingPage, // Hidden - uncomment to show coaching page
+  // CoursePage, // Hidden - uncomment to show course page
   BookPage,
   AboutPage,
   ConnectPage,
@@ -23,8 +23,8 @@ function App() {
           <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/course" element={<CoursePage />} />
-          <Route path="/coaching" element={<CoachingPage />} />
+          {/* <Route path="/coaching" element={<CoachingPage />} /> */} {/* Hidden - uncomment to show coaching page */}
+          {/* <Route path="/course" element={<CoursePage />} /> */} {/* Hidden - uncomment to show course page */}
           <Route path="/book" element={<BookPage />} />
           <Route path="/journal" element={<JournalPage />} />
           <Route path="/about" element={<AboutPage />} />
