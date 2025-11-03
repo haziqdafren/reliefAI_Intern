@@ -2,6 +2,7 @@ import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
 import { SuccessModal } from '../components/ui/SuccessModal';
+import { submitToAirtable } from '../utils/airtable';
 
 export const ConnectPage = () => {
   const titleAnimation = useScrollAnimation();
@@ -51,7 +52,7 @@ export const ConnectPage = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     const foundErrors = validate();
@@ -60,11 +61,28 @@ export const ConnectPage = () => {
       return;
     }
     setIsSubmitting(true);
-    setTimeout(() => {
+    
+    try {
+      const result = await submitToAirtable({
+        inquiryType: formData.inquiryType,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+      });
+
+      if (result.success) {
+        setShowSuccess(true);
+        setFormData({ inquiryType: '1:1 coaching', firstName: '', lastName: '', email: '', phone: '', message: '' });
+      } else {
+        setErrors({ submit: result.error || 'Failed to submit. Please try again.' });
+      }
+    } catch (error) {
+      setErrors({ submit: 'An error occurred. Please try again.' });
+    } finally {
       setIsSubmitting(false);
-      setShowSuccess(true);
-      setFormData({ inquiryType: '1:1 coaching', firstName: '', lastName: '', email: '', phone: '', message: '' });
-    }, 700);
+    }
   };
 
   return (
@@ -212,6 +230,13 @@ export const ConnectPage = () => {
                 </div>
               </div>
 
+              {/* Submit Error */}
+              {errors.submit && (
+                <div className="text-center">
+                  <ErrorMessage message={errors.submit} />
+                </div>
+              )}
+
               {/* Actions */}
               <div className="text-center pt-4">
                 <button
@@ -224,25 +249,7 @@ export const ConnectPage = () => {
               </div>
             </form>
 
-            {/* Trust indicators - consistent with site style */}
-            <div className="mt-12 pt-8 border-t border-primary-200/30">
-              <div className="flex items-center justify-center gap-8 text-sm text-text-secondary">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
-                  <span>24hr response guaranteed</span>
-                </div>
-                <div className="w-px h-4 bg-primary-200"></div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
-                  <span>All inquiries welcome</span>
-                </div>
-                <div className="w-px h-4 bg-primary-200"></div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
-                  <span>Confidential & secure</span>
-                </div>
-              </div>
-            </div>
+            {/* Trust indicators removed per request */}
           </div>
           {/* Success Modal */}
           <SuccessModal
