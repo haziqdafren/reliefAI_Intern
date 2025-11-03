@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SuccessModal } from './ui/SuccessModal';
 import { ErrorMessage } from './ui/ErrorMessage';
 import { useNewsletter } from '../contexts/NewsletterContext';
+import { submitNewsletter } from '../utils/airtable';
 
 export const NewsletterBanner = () => {
   const [email, setEmail] = useState('');
@@ -51,10 +52,10 @@ export const NewsletterBanner = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setEmailError('');
-    
+
     if (!email.trim()) {
       setEmailError('Please enter your email address');
       return;
@@ -67,13 +68,27 @@ export const NewsletterBanner = () => {
 
     setIsSubmitting(true);
 
-    // Simulate newsletter signup
-    setTimeout(() => {
+    try {
+      const result = await submitNewsletter({
+        email: email.trim(),
+        source: 'website-banner'
+      });
+
+      if (result.success) {
+        setShowSuccess(true);
+        setEmail('');
+      } else {
+        if (result.alreadySubscribed) {
+          setEmailError('This email is already subscribed!');
+        } else {
+          setEmailError(result.error || 'Failed to subscribe. Please try again.');
+        }
+      }
+    } catch (error) {
+      setEmailError('An error occurred. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setShowSuccess(true);
-      setEmail('');
-      // Don't hide banner immediately - let modal handle it
-    }, 1000);
+    }
   };
 
   const handleClose = () => {
