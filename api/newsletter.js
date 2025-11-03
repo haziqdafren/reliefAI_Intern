@@ -1,12 +1,9 @@
 const Airtable = require('airtable');
 
-exports.handler = async (event, context) => {
+module.exports = async (req, res) => {
   // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
@@ -17,25 +14,18 @@ exports.handler = async (event, context) => {
     } = process.env;
 
     if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Airtable configuration missing' }),
-      };
+      return res.status(500).json({ error: 'Airtable configuration missing' });
     }
 
     // Initialize Airtable
     const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 
     // Parse request body
-    const body = JSON.parse(event.body);
-    const { email, source = 'website-banner' } = body;
+    const { email, source = 'website-banner' } = req.body;
 
     // Validate required fields
     if (!email) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Email is required' }),
-      };
+      return res.status(400).json({ error: 'Email is required' });
     }
 
     // Check if email already exists
@@ -47,13 +37,10 @@ exports.handler = async (event, context) => {
       .firstPage();
 
     if (existingRecords.length > 0) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: 'Email already subscribed',
-          alreadySubscribed: true
-        }),
-      };
+      return res.status(400).json({
+        error: 'Email already subscribed',
+        alreadySubscribed: true
+      });
     }
 
     // Create record in Airtable
@@ -68,24 +55,15 @@ exports.handler = async (event, context) => {
       },
     ]);
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        success: true,
-        recordId: records[0].id,
-      }),
-    };
+    return res.status(200).json({
+      success: true,
+      recordId: records[0].id,
+    });
   } catch (error) {
     console.error('Newsletter subscription error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Failed to subscribe to newsletter',
-        details: error.message,
-      }),
-    };
+    return res.status(500).json({
+      error: 'Failed to subscribe to newsletter',
+      details: error.message,
+    });
   }
 };

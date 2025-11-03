@@ -1,12 +1,9 @@
 const Airtable = require('airtable');
 
-exports.handler = async (event, context) => {
+module.exports = async (req, res) => {
   // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
@@ -17,25 +14,18 @@ exports.handler = async (event, context) => {
     } = process.env;
 
     if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Airtable configuration missing' }),
-      };
+      return res.status(500).json({ error: 'Airtable configuration missing' });
     }
 
     // Initialize Airtable
     const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 
     // Parse request body
-    const body = JSON.parse(event.body);
-    const { inquiryType, firstName, lastName, email, phone, message } = body;
+    const { inquiryType, firstName, lastName, email, phone, message } = req.body;
 
     // Validate required fields
     if (!firstName || !lastName || !email || !message) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required fields' }),
-      };
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Create record in Airtable
@@ -53,25 +43,15 @@ exports.handler = async (event, context) => {
       },
     ]);
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        success: true,
-        recordId: records[0].id,
-      }),
-    };
+    return res.status(200).json({
+      success: true,
+      recordId: records[0].id,
+    });
   } catch (error) {
     console.error('Airtable error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Failed to submit inquiry',
-        details: error.message,
-      }),
-    };
+    return res.status(500).json({
+      error: 'Failed to submit inquiry',
+      details: error.message,
+    });
   }
 };
-
