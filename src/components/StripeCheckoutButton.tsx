@@ -1,3 +1,4 @@
+// Stripe Checkout Button Component
 import React, { useState } from 'react';
 import { createCheckoutSession } from '../utils/stripe';
 
