@@ -1,34 +1,27 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-exports.handler = async (event, context) => {
+module.exports = async (req, res) => {
   // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const { STRIPE_SECRET_KEY } = process.env;
 
     if (!STRIPE_SECRET_KEY) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Stripe configuration missing' }),
-      };
+      return res.status(500).json({ error: 'Stripe configuration missing' });
     }
 
     // Parse request body
-    const body = JSON.parse(event.body);
-    const { priceId, productName, productType } = body;
+    const { priceId, productName, productType } = req.body;
 
     if (!priceId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Price ID is required' }),
-      };
+      return res.status(400).json({ error: 'Price ID is required' });
     }
+
+    // Get the origin from headers
+    const origin = req.headers.origin || req.headers.referer || 'https://jessieli-dusky.vercel.app';
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -40,33 +33,24 @@ exports.handler = async (event, context) => {
         },
       ],
       mode: 'payment',
-      success_url: `${event.headers.origin || event.headers.referer}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${event.headers.origin || event.headers.referer}/payment-cancel`,
+      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/payment-cancel`,
       metadata: {
         productName: productName || 'Product',
         productType: productType || 'general',
       },
     });
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionId: session.id,
-        url: session.url,
-      }),
-    };
+    return res.status(200).json({
+      sessionId: session.id,
+      url: session.url,
+    });
   } catch (error) {
     console.error('Stripe error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Failed to create checkout session',
-        details: error.message,
-      }),
-    };
+    return res.status(500).json({
+      error: 'Failed to create checkout session',
+      details: error.message,
+    });
   }
 };
 
