@@ -1,3 +1,8 @@
 {
-  "name": "jessielicoaching-simple"
+  "name": "jessielicoaching-simple",
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 10
+    }
+  }
 }
