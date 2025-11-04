@@ -12,6 +12,7 @@ export const HeroSection = OriginalHeroSection;
 // Re-export other components that don't have variations
 export { AboutSection } from './AboutSection';
 export { StatsSection } from './StatsSection';
+export { JournalSection } from './JournalSection';
 export { BalanceSection } from './BalanceSection';
 export { BookSection } from './BookSection';
 export { CoachingSection } from './CoachingSection';
@@ -23,3 +24,6 @@ export { Footer } from './Footer';
 export { Modal } from './ui/Modal';
 export { SuccessModal } from './ui/SuccessModal';
 export { ErrorMessage } from './ui/ErrorMessage';
+
+// Stripe Integration
+export { StripeCheckoutButton } from './StripeCheckoutButton';

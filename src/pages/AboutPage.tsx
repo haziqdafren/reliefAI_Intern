@@ -91,35 +91,35 @@ export const AboutPage = () => {
           {/* Story content */}
           <div className="lg:col-span-7 relative">
             <div className="mb-6">
-              <h2 className="text-2xl font-corporate font-medium text-text-primary">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-corporate font-medium text-text-primary">
                 My Story
               </h2>
             </div>
-            
+
             <div className="glass-card backdrop-blur-md p-8 rounded-2xl border border-primary-400/20 mb-8">
-              <blockquote className="text-text-primary font-corporate text-lg italic leading-relaxed">
-                "I spent years trying to be the 'right kind' of leader in rooms where I was often 
-                the only woman. I dimmed parts of myself, adopted masculine communication styles, 
+              <blockquote className="text-text-primary font-corporate text-sm sm:text-base md:text-lg italic leading-relaxed">
+                "I spent years trying to be the 'right kind' of leader in rooms where I was often
+                the only woman. I dimmed parts of myself, adopted masculine communication styles,
                 and wondered why success felt so hollow."
               </blockquote>
             </div>
-            
+
             <div className="space-y-6">
-              <p className="text-text-secondary font-corporate leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-text-secondary font-corporate leading-relaxed">
                 The breakthrough came during a particularly brutal board meeting where I watched 
                 myself shrink to fit. That night, I made a decision: I would find a way to lead 
                 that honored all of who I am.
               </p>
               
-              <p className="text-text-secondary font-corporate leading-relaxed">
-                Over the past decade, I've developed the BALANCE framework—not from theory, 
-                but from the trenches of corporate leadership, startup chaos, and the quiet moments 
-                of breakthrough. I've coached over 500 women leaders across tech, finance, energy, 
+              <p className="text-sm sm:text-base md:text-lg text-text-secondary font-corporate leading-relaxed">
+                Over the past decade, I've developed the BALANCE framework—not from theory,
+                but from the trenches of corporate leadership, startup chaos, and the quiet moments
+                of breakthrough. I've coached over 500 women leaders across tech, finance, energy,
                 and manufacturing who refused to choose between power and authenticity.
               </p>
               
-              <p className="text-text-secondary font-corporate leading-relaxed">
-                Today, I help women step into boardrooms, pitch meetings, and leadership roles 
+              <p className="text-sm sm:text-base md:text-lg text-text-secondary font-corporate leading-relaxed">
+                Today, I help women step into boardrooms, pitch meetings, and leadership roles
                 as their whole selves—fierce, intuitive, strategic, and unapologetically authentic.
               </p>
             </div>
@@ -136,8 +136,7 @@ export const AboutPage = () => {
         >
           {/* Header */}
           <div className="text-center mb-12">
-            <h2 className="text-sm uppercase tracking-wider text-primary-400 mb-4 font-medium">Community</h2>
-            <p className="font-corporate text-3xl md:text-4xl text-text-primary font-normal">How We Give Back</p>
+            <p className="font-corporate text-3xl md:text-4xl text-text-primary font-normal">Empowering the Next Generation</p>
           </div>
 
           {/* Combined charity and support section - fully responsive */}
@@ -147,6 +146,11 @@ export const AboutPage = () => {
               <p className="text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed mb-4 sm:mb-6">
                 Inspiring Girls Australia connects girls with real women role models across industries—expanding what they believe is possible and strengthening their confidence. I partner with the organization through mentoring and speaking to help build a pipeline of authentic, purpose-driven leaders.
               </p>
+              <div className="bg-primary-50 border-l-4 border-primary-400 p-4 sm:p-6 rounded-r-lg mb-6 sm:mb-8">
+                <p className="text-sm sm:text-base md:text-lg text-primary-700 font-medium leading-relaxed">
+                  Fifty percent of the net profit from book royalties will be donated to Inspiring Girls Australia, supporting programs that connect young women with inspiring female role models and help them dream bigger.
+                </p>
+              </div>
               <ul className="text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed list-disc pl-4 sm:pl-6 space-y-1 sm:space-y-2 mb-6 sm:mb-8">
                 <li>School talks and workshops on authentic leadership</li>
                 <li>Mentorship and career visibility programs</li>

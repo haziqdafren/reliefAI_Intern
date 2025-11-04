@@ -3,6 +3,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Modal } from './ui/Modal';
 import { ErrorMessage } from './ui/ErrorMessage';
 import { SuccessModal } from './ui/SuccessModal';
+import { submitToAirtable } from '../utils/airtable';
 
 export const AboutSection = () => {
   const textAnimation = useScrollAnimation();
@@ -62,7 +63,7 @@ export const AboutSection = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     const foundErrors = validate();
@@ -72,13 +73,29 @@ export const AboutSection = () => {
     }
 
     setIsSubmitting(true);
-    // Simulate submission
-    setTimeout(() => {
+    
+    try {
+      const result = await submitToAirtable({
+        inquiryType: formData.inquiryType,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+      });
+
+      if (result.success) {
+        setShowSuccess(true);
+        setFormData({ inquiryType: 'Speaking', firstName: '', lastName: '', email: '', phone: '', message: '' });
+        setIsModalOpen(false);
+      } else {
+        setErrors({ submit: result.error || 'Failed to submit. Please try again.' });
+      }
+    } catch (error) {
+      setErrors({ submit: 'An error occurred. Please try again.' });
+    } finally {
       setIsSubmitting(false);
-      setShowSuccess(true);
-      setFormData({ inquiryType: 'Speaking', firstName: '', lastName: '', email: '', phone: '', message: '' });
-      setIsModalOpen(false);
-    }, 700);
+    }
   };
 
   return (
@@ -300,6 +317,13 @@ export const AboutSection = () => {
               {errors.message && <ErrorMessage message={errors.message} />}
             </div>
           </div>
+
+          {/* Submit Error */}
+          {errors.submit && (
+            <div className="pt-2">
+              <ErrorMessage message={errors.submit} />
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-2">

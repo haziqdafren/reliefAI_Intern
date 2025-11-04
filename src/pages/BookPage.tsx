@@ -1,6 +1,7 @@
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
+import { StripeCheckoutButton } from '../components/StripeCheckoutButton';
 
 export const BookPage = () => {
   const heroAnimation = useScrollAnimation();
@@ -205,9 +206,15 @@ export const BookPage = () => {
                   Turn inward and reconnect with your authentic self. Build self-awareness through the BALANCE framework, cultivate gratitude, reflect on your purpose, and create headspace to stay centered on your north star. A safe space for your growth and self-discovery.
                 </p>
                 <div className="flex items-center gap-4 mb-4">
-                  <button className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                  <StripeCheckoutButton
+                    priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
+                    productName="Homwards: to my authentic self - Journal"
+                    productType="journal"
+                    className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                    disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
+                  >
                     Buy Now — USD 25
-                  </button>
+                  </StripeCheckoutButton>
                 </div>
                 {/* Shipping note removed per request */}
               </div>

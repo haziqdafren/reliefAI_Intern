@@ -2,7 +2,7 @@ import React from 'react';
 import {
   HeroSection,
   AboutSection,
-  StatsSection,
+  JournalSection,
   BalanceSection,
   CoachingSection,
   TestimonialsSection,
@@ -13,7 +13,7 @@ export const HomePage = () => {
     <>
       <HeroSection />
       <AboutSection />
-      <StatsSection />
+      <JournalSection />
       <BalanceSection />
       <CoachingSection />
       <TestimonialsSection />

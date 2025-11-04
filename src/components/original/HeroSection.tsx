@@ -75,7 +75,7 @@ export const HeroSection = () => {
                   href="/book"
                   className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-4 px-12 rounded-full text-lg md:text-xl font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-400/50 shadow-xl shadow-primary-400/40 uppercase tracking-wider text-center"
                 >
-                  Pre-Order Now
+                  Coming Soon
                 </a>
               </div>
             </div>

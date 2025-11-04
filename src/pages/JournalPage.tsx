@@ -1,6 +1,7 @@
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
+import { StripeCheckoutButton } from '../components/StripeCheckoutButton';
 
 export const JournalPage = () => {
   const heroAnimation = useScrollAnimation();
@@ -93,12 +94,15 @@ export const JournalPage = () => {
           </p>
 
           <div className="flex justify-center">
-            <a
-              href="/contact"
+            <StripeCheckoutButton
+              priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
+              productName="Homwards: to my authentic self - Journal"
+              productType="journal"
               className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
+              disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
             >
               Buy Now — USD 25
-            </a>
+            </StripeCheckoutButton>
           </div>
         </div>
 
@@ -182,12 +186,15 @@ export const JournalPage = () => {
               Join hundreds of women leaders who are transforming their approach to leadership through intentional self-reflection and authentic growth practices.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="/contact"
+              <StripeCheckoutButton
+                priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
+                productName="Homwards: to my authentic self - Journal"
+                productType="journal"
                 className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
+                disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
               >
-                Pre-Order Your Journal Now
-              </a>
+                Coming Soon
+              </StripeCheckoutButton>
               <p className="text-sm text-text-secondary font-medium">
                 Available for shipping in 2 months
               </p>
