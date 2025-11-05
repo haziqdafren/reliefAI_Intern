@@ -18,18 +18,12 @@ export const AboutPage = () => {
 
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
         {/* Professional header - fully responsive */}
-        <div 
+        <div
           ref={headerAnimation.ref}
           className={`text-center py-12 sm:py-16 md:py-20 relative transition-all duration-1000 ${
             headerAnimation.isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="relative inline-block mb-6 sm:mb-8">
-            <div className="bg-primary-400/10 text-primary-400 py-2 sm:py-3 px-4 sm:px-8 rounded-full text-xs sm:text-sm font-medium uppercase tracking-wider border border-primary-400/20">
-              The Woman Behind the Framework
-            </div>
-          </div>
-          
           <div className="relative max-w-5xl mx-auto px-4">
             <h1 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium text-text-primary mb-6 sm:mb-8 leading-tight">
               I used to think I had to choose between

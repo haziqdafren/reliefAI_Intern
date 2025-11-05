@@ -20,8 +20,15 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Price ID is required' });
     }
 
-    // Get the origin from headers
-    const origin = req.headers.origin || req.headers.referer || 'https://jessieli-dusky.vercel.app';
+    // Get the origin from headers or environment variable
+    // Priority: 1) Request origin 2) Referer 3) Environment variable 4) Vercel URL 5) Default
+    let origin = req.headers.origin || req.headers.referer?.replace(/\/$/, '');
+
+    if (!origin) {
+      origin = process.env.NEXT_PUBLIC_SITE_URL ||
+               (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+               'https://jessieli-dusky.vercel.app';
+    }
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({

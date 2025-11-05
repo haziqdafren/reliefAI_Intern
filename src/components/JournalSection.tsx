@@ -14,11 +14,11 @@ export const JournalSection = () => {
             headerAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
-          <h2 className="font-heading text-4xl md:text-5xl text-text-primary font-medium max-w-2xl mx-auto mb-4">
+          <h2 className="font-heading text-6xl md:text-8xl text-text-primary font-medium max-w-2xl mx-auto mb-4">
             Reconnect with your authentic self
           </h2>
           <p className="text-lg md:text-xl text-text-secondary font-corporate max-w-3xl mx-auto">
-            A guided journal to help you discover and embrace your true leadership potential
+            Homeward: To My Authentic Self is a guided daily and weekly journal designed to help you build self-awareness, challenge old patterns, and mindfully create new habits that support your goals and purpose.
           </p>
         </div>
 
@@ -48,12 +48,10 @@ export const JournalSection = () => {
               Guided Inward: A Journal For Self-Discovery
             </p>
             <p className="text-base md:text-lg text-text-secondary font-corporate leading-relaxed mb-8">
-              Rediscover your authentic self with our guided journal, featuring daily and weekly prompts
-              designed to inspire deeper reflection and personal growth. Challenge yourself to look inward,
-              embrace vulnerability, and reconnect with the truest version of you.
+              Homeward: To My Authentic Self is a guided daily and weekly journal designed to help you build self-awareness, challenge old patterns, and mindfully create new habits that support your goals and purpose. With thoughtful prompts and insightful reflection exercises, this journal empowers you to look deeper, move beyond old patterns, and thrive in your most authentic self.
             </p>
             <a
-              href="/journal"
+              href="/journal#buy"
               className="inline-block bg-gradient-to-r from-primary-400 to-primary-500 text-white py-4 px-12 rounded-full text-lg md:text-xl font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-400/50 shadow-xl shadow-primary-400/40 uppercase tracking-wider"
             >
               Buy It Now
