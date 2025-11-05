@@ -8,6 +8,7 @@
 <style>
   :root{
     --bg:#F7F4EF;
+    --shelf-bg:#E09B8A;
     --ink:#000000;
     --shadow:rgba(0,0,0,.08);
     --cover-w:420px;   /* on-screen width of front cover */
@@ -27,7 +28,7 @@
   @media(min-width:860px){ .mock-area{grid-template-columns:auto 1fr} }
 
   .shelf{
-    background:linear-gradient(180deg,#ffffff,#fafafa);
+    background:var(--shelf-bg);
     border:1px solid #eee; border-radius:12px; padding:20px;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 8px 24px rgba(0,0,0,.06) inset;
@@ -101,12 +102,19 @@
           <option value="1.53">Royal 153×234 mm (≈1:1.53)</option>
         </select>
       </label>
-      <label>Background
+      <label>Book Cover
         <select id="bg">
-          <option value="#E09B8A" selected="">Brand Coral</option>
-          <option value="#F7F4EF">Warm Ivory</option>
+          <option value="#F7F4EF" selected="">Warm Ivory</option>
           <option value="#FFFFFF">Clean White</option>
           <option value="#F2F2F2">Cool Light Gray</option>
+        </select>
+      </label>
+      <label>Shelf Background
+        <select id="shelfBg">
+          <option value="#E09B8A" selected="">Brand Coral</option>
+          <option value="#FFFFFF">White</option>
+          <option value="linear-gradient(180deg,#ffffff,#fafafa)">Light Gradient</option>
+          <option value="#F0E8E3">Warm Beige</option>
         </select>
       </label>
     </div>
@@ -147,16 +155,19 @@
   const w = document.getElementById('w');
   const trimSel = document.getElementById('trim');
   const bgSel = document.getElementById('bg');
+  const shelfBgSel = document.getElementById('shelfBg');
   const root = document.documentElement;
 
   function update(){
     root.style.setProperty('--cover-w', w.value+'px');
     root.style.setProperty('--ratio', trimSel.value);
     root.style.setProperty('--bg', bgSel.value);
+    root.style.setProperty('--shelf-bg', shelfBgSel.value);
   }
   w.addEventListener('input', update);
   trimSel.addEventListener('change', update);
   bgSel.addEventListener('change', update);
+  shelfBgSel.addEventListener('change', update);
   update();
 </script>
 
