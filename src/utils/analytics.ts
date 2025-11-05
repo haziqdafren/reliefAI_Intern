@@ -20,7 +20,7 @@ const isGALoaded = (): boolean => {
 export const trackPageView = (path: string) => {
   if (!isGALoaded()) return;
 
-  window.gtag!('config', process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX', {
+  window.gtag!('config', process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-EG1FN3E7EZ', {
     page_path: path,
   });
 };
