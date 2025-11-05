@@ -13,7 +13,8 @@ import {
   JournalPage,
   SpeakerKitPage,
   PaymentSuccessPage,
-  PaymentCancelPage
+  PaymentCancelPage,
+  NotFoundPage
 } from './pages';
 
 // Wrapper component for analytics tracking
@@ -35,6 +36,7 @@ const AppContent = () => {
         <Route path="/speaker-kit" element={<SpeakerKitPage />} />
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/payment-cancel" element={<PaymentCancelPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>
