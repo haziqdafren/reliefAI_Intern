@@ -6,3 +6,5 @@ export { AboutPage } from './AboutPage';
 export { ConnectPage } from './ConnectPage';
 export { JournalPage } from './JournalPage';
 export { SpeakerKitPage } from './SpeakerKitPage';
+export { PaymentSuccessPage } from './PaymentSuccessPage';
+export { PaymentCancelPage } from './PaymentCancelPage';
