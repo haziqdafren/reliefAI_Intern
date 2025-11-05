@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header, NewsletterBanner, Footer, ScrollToTop } from './components';
 import { NewsletterProvider } from './contexts/NewsletterContext';
+import { CurrencyProvider } from './contexts/CurrencyContext';
 import { usePageTracking } from './hooks/usePageTracking';
 import {
   HomePage,
@@ -45,12 +46,14 @@ const AppContent = () => {
 
 function App() {
   return (
-    <NewsletterProvider>
-      <Router>
-        <ScrollToTop />
-        <AppContent />
-      </Router>
-    </NewsletterProvider>
+    <CurrencyProvider>
+      <NewsletterProvider>
+        <Router>
+          <ScrollToTop />
+          <AppContent />
+        </Router>
+      </NewsletterProvider>
+    </CurrencyProvider>
   );
 }
 

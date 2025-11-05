@@ -2,6 +2,8 @@ import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
 import { StripeCheckoutButton } from '../components/StripeCheckoutButton';
+import { useCurrency } from '../contexts/CurrencyContext';
+import { getPriceDisplay } from '../utils/currency';
 
 export const JournalPage = () => {
   const heroAnimation = useScrollAnimation();
@@ -9,6 +11,10 @@ export const JournalPage = () => {
   const frameworkAnimation = useScrollAnimation();
   const ctaAnimation = useScrollAnimation();
   const { isNewsletterVisible } = useNewsletter();
+  const { currency } = useCurrency();
+
+  // Journal price in USD
+  const JOURNAL_PRICE_USD = 25;
 
   const journalFeatures = [
     "Daily self-reflection prompts aligned with BALANCE framework",
@@ -101,7 +107,7 @@ export const JournalPage = () => {
               className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
               disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
             >
-              Buy Now — USD 25
+              Buy Now — {getPriceDisplay(JOURNAL_PRICE_USD, currency)}
             </StripeCheckoutButton>
           </div>
         </div>
