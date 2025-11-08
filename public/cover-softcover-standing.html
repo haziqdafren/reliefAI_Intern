@@ -13,7 +13,7 @@
     --shadow:rgba(0,0,0,.08);
     --cover-w:420px;   /* on-screen width of front cover */
     --ratio:1.6;       /* Demy (135x216mm) ≈ 1:1.6 */
-    --spine-w:10px;    /* Thinner spine for paperback */
+    --spine-w:12px;    /* Thinner spine for paperback */
   }
   *{box-sizing:border-box}
   body{
@@ -30,50 +30,72 @@
 
   .shelf{
     background:var(--shelf-bg);
-    border:1px solid #eee; border-radius:12px; padding:40px 60px;
+    border:1px solid #eee; border-radius:12px; padding:40px 80px;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 8px 24px rgba(0,0,0,.06) inset;
+    min-height:500px;
   }
 
-  /* 3D Standing Book Container */
+  /* PROPER 3D Standing Book Container with Perspective */
+  .book-container{
+    perspective:1400px;
+    perspective-origin:50% 50%;
+  }
+
   .book-3d{
-    perspective:2000px;
-    display:flex; align-items:center; justify-content:center;
-  }
-
-  .book{
+    position:relative;
     width:var(--cover-w);
     height:calc(var(--cover-w)*var(--ratio));
-    background:var(--bg);
-    border-radius:3px;
-    position:relative;
-    display:flex; align-items:center; justify-content:center; padding:6%;
-    box-shadow:
-      -8px 0 16px rgba(0,0,0,.08),
-      0 8px 24px rgba(0,0,0,.12),
-      0 2px 6px rgba(0,0,0,.06);
-    transform:rotateY(-25deg) rotateX(2deg);
     transform-style:preserve-3d;
-    transition:transform 0.6s ease;
+    transform:rotateY(-30deg) rotateX(3deg);
+    transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .book:hover{
-    transform:rotateY(-20deg) rotateX(1deg);
+  .book-3d:hover{
+    transform:rotateY(-35deg) rotateX(2deg);
   }
 
-  /* Paperback spine - visible and thinner than hardcover */
+  /* Front Cover - Main visible face */
+  .front-cover{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    border-radius:0 3px 3px 0;
+    transform-style:preserve-3d;
+    transform:translateZ(calc(var(--spine-w) / 2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6%;
+    box-shadow:
+      2px 0 6px rgba(0,0,0,.08),
+      8px 8px 24px rgba(0,0,0,.15),
+      0 4px 8px rgba(0,0,0,.08);
+  }
+
+  /* Spine - Rotated 90deg to show side */
   .spine{
     position:absolute;
-    left:calc(var(--spine-w) * -1);
-    top:0;
-    bottom:0;
     width:var(--spine-w);
-    background:linear-gradient(90deg, #E5E0D8 0%, #EDE9E2 30%, #EDE9E2 70%, #E5E0D8 100%);
-    box-shadow:
-      inset -1px 0 2px rgba(0,0,0,.1),
-      -2px 0 4px rgba(0,0,0,.06);
+    height:100%;
+    background:linear-gradient(90deg,
+      #D8D3CB 0%,
+      #E5E0D8 15%,
+      #EDE9E2 50%,
+      #E5E0D8 85%,
+      #D8D3CB 100%);
+    transform-origin:left center;
+    transform:rotateY(90deg) translateZ(calc(var(--spine-w) / 2));
+    left:0;
+    top:0;
     border-radius:2px 0 0 2px;
-    overflow:hidden;
+    box-shadow:
+      inset 0 0 3px rgba(0,0,0,.12),
+      -4px 0 8px rgba(0,0,0,.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 
   .spine .vert{
@@ -84,57 +106,122 @@
     white-space:nowrap;
     font-size:9px;
     font-weight:800;
-    letter-spacing:.12em;
+    letter-spacing:.14em;
     color:var(--ink);
+    text-transform:uppercase;
   }
 
-  /* Subtle edge highlighting for 3D effect */
-  .book::after{
+  /* Pages - Create depth/volume effect */
+  .pages{
+    position:absolute;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+  }
+
+  /* Multiple page layers for realistic volume */
+  .pages::before,
+  .pages::after{
     content:'';
     position:absolute;
-    right:0;
-    top:0;
-    bottom:0;
-    width:2px;
-    background:linear-gradient(180deg,
-      rgba(255,255,255,.3) 0%,
-      transparent 20%,
-      transparent 80%,
-      rgba(0,0,0,.05) 100%);
-    border-radius:0 3px 3px 0;
+    width:calc(100% - 4px);
+    height:calc(100% - 4px);
+    background:#FEFDFB;
+    border-radius:0 2px 2px 0;
+    top:2px;
+    right:2px;
   }
 
-  .title{
-    width:100%; text-align:left; display:flex; flex-direction:column;
-    line-height:0.88; letter-spacing:-0.02em; user-select:none;
+  .pages::before{
+    transform:translateZ(-1px) translateX(-0.5px);
+    box-shadow:0 0 2px rgba(0,0,0,.06);
   }
-  .title span{display:block; font-weight:900; font-size:clamp(34px, 7.5vw, 62px)}
+
+  .pages::after{
+    transform:translateZ(-2px) translateX(-1px);
+    box-shadow:0 0 3px rgba(0,0,0,.08);
+  }
+
+  /* Back cover - barely visible from this angle */
+  .back-cover{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    border-radius:3px 0 0 3px;
+    transform:translateZ(calc(var(--spine-w) / -2));
+    box-shadow:-2px 0 8px rgba(0,0,0,.08);
+  }
+
+  /* Content positioning - all on front cover */
+  .title{
+    width:100%;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    line-height:0.88;
+    letter-spacing:-0.02em;
+    user-select:none;
+    position:relative;
+    z-index:10;
+  }
+
+  .title span{
+    display:block;
+    font-weight:900;
+    font-size:clamp(34px, 7.5vw, 62px);
+  }
 
   .row-wolves{
-    display:flex; align-items:baseline; gap:0.06em;
+    display:flex;
+    align-items:baseline;
+    gap:0.06em;
     letter-spacing:-0.02em;
   }
-  /* Large dot "O" — slightly oversized for optical balance */
+
+  /* Large dot "O" */
   .dotO{
-    width:0.62em; height:0.62em; border-radius:50%;
-    background:var(--ink); display:inline-block;
-    transform:translateY(0.06em); /* optical vertical centering */
+    width:0.62em;
+    height:0.62em;
+    border-radius:50%;
+    background:var(--ink);
+    display:inline-block;
+    transform:translateY(0.06em);
     flex:0 0 auto;
   }
 
   .author{
-    position:absolute; bottom:6%; left:6%; right:6%;
-    display:flex; flex-direction:column; gap:8px;
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    z-index:10;
   }
+
   .subtitle{
-    font-weight:600; letter-spacing:0.01em;
+    font-weight:600;
+    letter-spacing:0.01em;
     font-size:clamp(13px, 2.4vw, 18px);
     line-height:1.25;
   }
-  .rule{height:1px; background:#111; opacity:.18}
+
+  .rule{
+    height:1px;
+    background:#111;
+    opacity:.18;
+  }
+
   .name-line{
-    display:flex; justify-content:space-between; align-items:center;
-    font-weight:700; letter-spacing:0.02em; font-size:clamp(12px, 2.2vw, 16px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:700;
+    letter-spacing:0.02em;
+    font-size:clamp(12px, 2.2vw, 16px);
   }
 
   .notes{font-size:14px; color:#333; line-height:1.5}
@@ -157,8 +244,8 @@
         </select>
       </label>
       <label>Spine Width
-        <input id="spineW" type="range" min="8" max="16" value="10">
-        <span id="spineLabel">10px</span>
+        <input id="spineW" type="range" min="8" max="18" value="12">
+        <span id="spineLabel">12px</span>
       </label>
       <label>Book Cover
         <select id="bg">
@@ -183,26 +270,38 @@
 
     <div class="mock-area">
       <div class="shelf">
-        <div class="book-3d">
-          <div class="book" id="book">
-            <div class="spine"><div class="vert">DANCING WITH WOLVES</div></div>
+        <div class="book-container">
+          <div class="book-3d" id="book">
+            <!-- Back cover (barely visible) -->
+            <div class="back-cover"></div>
 
-            <div class="title" aria-label="Book title">
-              <span>DANCING</span>
-              <span>WITH</span>
-              <div class="row-wolves">
-                <span style="letter-spacing:-0.03em;">W</span>
-                <span class="dotO" aria-hidden="true" title="Dot O"></span>
-                <span style="letter-spacing:-0.03em;">LVES</span>
-              </div>
+            <!-- Pages for volume/depth -->
+            <div class="pages"></div>
+
+            <!-- Spine (rotated 90deg) -->
+            <div class="spine">
+              <div class="vert">Dancing with Wolves</div>
             </div>
 
-            <div class="author">
-              <div class="subtitle">Engaging Feminine Power to Master Authentic Leadership</div>
-              <div class="rule"></div>
-              <div class="name-line">
-                <span id="author-name">Jessie Li</span>
-                <span style="opacity:.7">A Leadership Manifesto</span>
+            <!-- Front Cover (main visible surface) -->
+            <div class="front-cover">
+              <div class="title" aria-label="Book title">
+                <span>DANCING</span>
+                <span>WITH</span>
+                <div class="row-wolves">
+                  <span style="letter-spacing:-0.03em;">W</span>
+                  <span class="dotO" aria-hidden="true" title="Dot O"></span>
+                  <span style="letter-spacing:-0.03em;">LVES</span>
+                </div>
+              </div>
+
+              <div class="author">
+                <div class="subtitle">Engaging Feminine Power to Master Authentic Leadership</div>
+                <div class="rule"></div>
+                <div class="name-line">
+                  <span id="author-name">Jessie Li</span>
+                  <span style="opacity:.7">A Leadership Manifesto</span>
+                </div>
               </div>
             </div>
           </div>
@@ -210,7 +309,7 @@
       </div>
 
       <div class="notes">
-        <strong>Standing 3D Soft Cover / Paperback:</strong> Features a realistic 3D perspective view of a paperback book standing upright. The visible spine is thinner than hardcover (adjustable 8-16px), with softer shadows and flexible appearance. The 25° rotation angle shows both the front cover and spine, creating an authentic bookshelf display. Hover to see subtle animation.
+        <strong>Standing 3D Soft Cover / Paperback:</strong> Proper 3D perspective using CSS transform-style: preserve-3d. The book is rotated 30° on the Y-axis to show both front cover and spine simultaneously. The spine uses rotateY(90deg) for authentic positioning, with visible pages creating depth. Softer shadows and flexible paperback styling distinguish it from hardcover. Hover to see rotation animation.
       </div>
     </div>
   </div>
