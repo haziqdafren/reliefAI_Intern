@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
@@ -9,7 +9,6 @@ export const PaymentSuccessPage = () => {
   const { isNewsletterVisible } = useNewsletter();
   const heroAnimation = useScrollAnimation();
   const detailsAnimation = useScrollAnimation();
-  const [sessionDetails, setSessionDetails] = useState<any>(null);
 
   useEffect(() => {
     // Optional: Fetch session details from backend if needed
