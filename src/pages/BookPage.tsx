@@ -8,7 +8,6 @@ import { getPriceDisplay } from '../utils/currency';
 export const BookPage = () => {
   const heroAnimation = useScrollAnimation();
   const synopsisAnimation = useScrollAnimation();
-  const socialProofAnimation = useScrollAnimation();
   const journalAnimation = useScrollAnimation();
   const { isNewsletterVisible } = useNewsletter();
   const { currency } = useCurrency();
