@@ -35,10 +35,10 @@ export const BookPage = () => {
           }`}
         >
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Clean Book Cover Section (embedded real cover) */}
+            {/* Clean Book Cover Section (soft cover design) */}
             <div className="text-center lg:text-left">
               <div className="relative inline-block">
-                <img src="/cover.png" alt="Dancing with Wolves Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
+                <img src="/cover-softcover.png" alt="Dancing with Wolves Soft Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
               </div>
             </div>
 
