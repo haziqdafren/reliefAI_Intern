@@ -26,7 +26,7 @@ export const Header = () => {
         : 'top-0 -translate-y-full'
     }`}>
       <nav className="container mx-auto px-4 md:px-6 flex justify-between items-center max-w-7xl">
-        <Link to="/" className="logo font-heading text-2xl md:text-4xl font-medium text-text-primary hover:text-primary-400 transition-colors tracking-wide">
+        <Link to="/" className="logo font-heading text-xl md:text-2xl font-medium text-text-primary hover:text-primary-400 transition-colors tracking-wide">
           JESSIE LI
         </Link>
         
