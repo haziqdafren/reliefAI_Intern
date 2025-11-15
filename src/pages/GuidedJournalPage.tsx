@@ -95,7 +95,7 @@ export const GuidedJournalPage = () => {
               {/* LEFT: Lifestyle Image - Full Display in Equal Container */}
               <div className="relative flex items-center justify-center bg-gradient-to-br from-primary-50 to-white rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2 p-3 sm:p-4 min-h-[300px] sm:min-h-[400px]">
                 <img
-                  src="/lifestyle.jpg"
+                  src="/lifestyle.JPG"
                   alt="Authentic Living Lifestyle"
                   className="w-full h-auto object-contain rounded-lg"
                 />
