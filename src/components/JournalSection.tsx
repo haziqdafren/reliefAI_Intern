@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { StripeCheckoutButton } from './StripeCheckoutButton';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -35,20 +36,22 @@ export const JournalSection = () => {
         >
           {/* Journal Image */}
           <div className="relative">
-            <div className="aspect-[3/4] max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2">
+            <Link to="/guidedjournal" className="block aspect-[3/4] max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2 cursor-pointer">
               <img
                 src="/journal.png"
                 alt="Homwards: to my authentic self - Guided Journal"
                 className="w-full h-full object-cover"
               />
-            </div>
+            </Link>
           </div>
 
           {/* Journal Info */}
           <div className="text-center lg:text-left">
-            <h3 className="font-heading text-3xl md:text-4xl text-text-primary font-medium mb-4">
-              Homwards: to my authentic self
-            </h3>
+            <Link to="/guidedjournal">
+              <h3 className="font-heading text-3xl md:text-4xl text-text-primary font-medium mb-4 hover:text-primary-500 transition-colors duration-300 cursor-pointer">
+                Homwards: to my authentic self
+              </h3>
+            </Link>
             <p className="text-primary-400 italic font-corporate text-lg mb-6">
               Guided Inward: A Journal For Self-Discovery
             </p>

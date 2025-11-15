@@ -12,6 +12,7 @@ import {
   AboutPage,
   ConnectPage,
   JournalPage,
+  GuidedJournalPage,
   SpeakerKitPage,
   PaymentSuccessPage,
   PaymentCancelPage,
@@ -32,6 +33,7 @@ const AppContent = () => {
         {/* <Route path="/course" element={<CoursePage />} /> */} {/* Hidden - uncomment to show course page */}
         <Route path="/book" element={<BookPage />} />
         <Route path="/journal" element={<JournalPage />} />
+        <Route path="/guidedjournal" element={<GuidedJournalPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/connect" element={<ConnectPage />} />
         <Route path="/speaker-kit" element={<SpeakerKitPage />} />
