@@ -130,7 +130,7 @@ export const AboutPage = () => {
         >
           {/* Header */}
           <div className="text-center mb-12">
-            <p className="font-corporate text-3xl md:text-4xl text-text-primary font-normal">Empowering the Next Generation</p>
+            <p className="font-corporate text-3xl md:text-4xl font-normal uppercase" style={{ color: '#e86975' }}>EMPOWERING THE NEXT GENERATION</p>
           </div>
 
           {/* Combined charity and support section - fully responsive */}
@@ -140,8 +140,8 @@ export const AboutPage = () => {
               <p className="text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed mb-4 sm:mb-6">
                 Inspiring Girls Australia connects girls with real women role models across industries—expanding what they believe is possible and strengthening their confidence. I partner with the organization through mentoring and speaking to help build a pipeline of authentic, purpose-driven leaders.
               </p>
-              <div className="bg-primary-50 border-l-4 border-primary-400 p-4 sm:p-6 rounded-r-lg mb-6 sm:mb-8">
-                <p className="text-sm sm:text-base md:text-lg text-primary-700 font-medium leading-relaxed">
+              <div className="bg-primary-50 border-l-4 p-4 sm:p-6 rounded-r-lg mb-6 sm:mb-8" style={{ borderLeftColor: '#e86975' }}>
+                <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed" style={{ color: '#e86975' }}>
                   Fifty percent of the net profit from book royalties will be donated to Inspiring Girls Australia, supporting programs that connect young women with inspiring female role models and help them dream bigger.
                 </p>
               </div>
@@ -160,16 +160,16 @@ export const AboutPage = () => {
           {/* Ways to get involved - 4 equal buttons */}
           <div className="max-w-6xl mx-auto mt-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <a href="https://www.inspiring-girls.com.au/volunteer" target="_blank" rel="noopener noreferrer" className="px-4 sm:px-6 py-3 rounded-full border-2 border-primary-400 text-text-primary hover:bg-primary-50 hover:border-primary-500 text-sm sm:text-base md:text-lg font-corporate font-bold transition-all duration-300 text-center">
+              <a href="https://www.inspiring-girls.com.au/volunteer" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center text-white py-4 px-6 rounded-full text-sm sm:text-base font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-xl uppercase tracking-wider" style={{ background: 'linear-gradient(to right, #e86975, #d85565)', boxShadow: '0 10px 25px -5px rgba(232, 105, 117, 0.4)' }}>
                 Volunteer
               </a>
-              <a href="/connect" className="px-4 sm:px-6 py-3 rounded-full border-2 border-primary-400 text-text-primary hover:bg-primary-50 hover:border-primary-500 text-sm sm:text-base md:text-lg font-corporate font-bold transition-all duration-300 text-center">
+              <a href="/connect" className="flex items-center justify-center text-white py-4 px-6 rounded-full text-sm sm:text-base font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-xl uppercase tracking-wider" style={{ background: 'linear-gradient(to right, #e86975, #d85565)', boxShadow: '0 10px 25px -5px rgba(232, 105, 117, 0.4)' }}>
                 Invite Jessie to Speak
               </a>
-              <a href="https://www.inspiring-girls.com.au/" target="_blank" rel="noopener noreferrer" className="px-4 sm:px-6 py-3 rounded-full border-2 border-primary-400 text-text-primary hover:bg-primary-50 hover:border-primary-500 text-sm sm:text-base md:text-lg font-corporate font-bold transition-all duration-300 text-center">
+              <a href="https://www.inspiring-girls.com.au/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center text-white py-4 px-6 rounded-full text-sm sm:text-base font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-xl uppercase tracking-wider" style={{ background: 'linear-gradient(to right, #e86975, #d85565)', boxShadow: '0 10px 25px -5px rgba(232, 105, 117, 0.4)' }}>
                 Share the Mission
               </a>
-              <a href="https://www.inspiring-girls.com.au/" target="_blank" rel="noopener noreferrer" className="px-4 sm:px-6 py-3 rounded-full border-2 border-primary-400 text-text-primary hover:bg-primary-50 hover:border-primary-500 text-sm sm:text-base md:text-lg font-corporate font-bold transition-all duration-300 text-center">
+              <a href="https://www.inspiring-girls.com.au/contact-us" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center text-white py-4 px-6 rounded-full text-sm sm:text-base font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-xl uppercase tracking-wider" style={{ background: 'linear-gradient(to right, #e86975, #d85565)', boxShadow: '0 10px 25px -5px rgba(232, 105, 117, 0.4)' }}>
                 Donate
               </a>
             </div>
