@@ -45,18 +45,26 @@ module.exports = async (req, res) => {
       }).base(process.env.AIRTABLE_BASE_ID);
 
       // Extract shipping details from Stripe session
-      const shippingDetails = session.shipping_details || session.shipping || {};
-      const shippingAddress = shippingDetails.address || {};
+      // Stripe uses 'shipping_details' for the shipping information
+      const shipping = session.shipping_details || session.shipping || null;
 
-      console.log('Shipping Details:', shippingDetails);
-      console.log('Shipping Address:', shippingAddress);
+      console.log('Full session shipping_details:', JSON.stringify(session.shipping_details, null, 2));
+      console.log('Full session shipping:', JSON.stringify(session.shipping, null, 2));
+      console.log('Customer details:', JSON.stringify(session.customer_details, null, 2));
+
+      // Extract name and address
+      const customerName = shipping?.name || session.customer_details?.name || '';
+      const shippingAddress = shipping?.address || {};
+
+      console.log('Extracted customer name:', customerName);
+      console.log('Extracted shipping address:', JSON.stringify(shippingAddress, null, 2));
 
       // Create payment record in Airtable
       await base(process.env.AIRTABLE_PAYMENTS_TABLE || 'Payments').create([
         {
           fields: {
             'Customer Email': session.customer_details?.email || '',
-            'Customer Name': shippingDetails.name || session.customer_details?.name || '',
+            'Customer Name': customerName,
             'Phone': session.customer_details?.phone || '',
             'Amount': session.amount_total / 100, // Convert from cents to dollars
             'Currency': session.currency?.toUpperCase() || 'USD',
