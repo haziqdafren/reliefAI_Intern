@@ -28,17 +28,28 @@ module.exports = async (req, res) => {
 
   // Handle the event
   if (stripeEvent.type === 'checkout.session.completed') {
-    const session = stripeEvent.data.object;
+    const sessionFromWebhook = stripeEvent.data.object;
 
     try {
+      // Retrieve the full session with shipping details
+      // The webhook event doesn't include all details by default
+      const session = await stripe.checkout.sessions.retrieve(sessionFromWebhook.id, {
+        expand: ['customer', 'line_items']
+      });
+
+      console.log('Retrieved full session:', session.id);
+
       // Initialize Airtable
       const base = new Airtable({
         apiKey: process.env.AIRTABLE_API_KEY,
       }).base(process.env.AIRTABLE_BASE_ID);
 
-      // Extract shipping details
-      const shippingDetails = session.shipping_details || session.customer_details?.address || {};
+      // Extract shipping details from Stripe session
+      const shippingDetails = session.shipping_details || session.shipping || {};
       const shippingAddress = shippingDetails.address || {};
+
+      console.log('Shipping Details:', shippingDetails);
+      console.log('Shipping Address:', shippingAddress);
 
       // Create payment record in Airtable
       await base(process.env.AIRTABLE_PAYMENTS_TABLE || 'Payments').create([
