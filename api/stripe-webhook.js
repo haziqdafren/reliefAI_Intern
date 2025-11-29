@@ -36,11 +36,17 @@ module.exports = async (req, res) => {
         apiKey: process.env.AIRTABLE_API_KEY,
       }).base(process.env.AIRTABLE_BASE_ID);
 
+      // Extract shipping details
+      const shippingDetails = session.shipping_details || session.customer_details?.address || {};
+      const shippingAddress = shippingDetails.address || {};
+
       // Create payment record in Airtable
       await base(process.env.AIRTABLE_PAYMENTS_TABLE || 'Payments').create([
         {
           fields: {
             'Customer Email': session.customer_details?.email || '',
+            'Customer Name': shippingDetails.name || session.customer_details?.name || '',
+            'Phone': session.customer_details?.phone || '',
             'Amount': session.amount_total / 100, // Convert from cents to dollars
             'Currency': session.currency?.toUpperCase() || 'USD',
             'Payment Status': 'Completed',
@@ -48,6 +54,13 @@ module.exports = async (req, res) => {
             'Product Name': session.metadata?.productName || 'Unknown',
             'Product Type': session.metadata?.productType || 'general',
             'Date': new Date().toISOString(),
+            // Shipping Address Fields
+            'Address Line 1': shippingAddress.line1 || '',
+            'Address Line 2': shippingAddress.line2 || '',
+            'City': shippingAddress.city || '',
+            'State': shippingAddress.state || '',
+            'Postal Code': shippingAddress.postal_code || '',
+            'Country': shippingAddress.country || '',
           },
         },
       ]);

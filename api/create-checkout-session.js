@@ -40,6 +40,12 @@ module.exports = async (req, res) => {
         },
       ],
       mode: 'payment',
+      shipping_address_collection: {
+        allowed_countries: ['US', 'CA', 'GB', 'AU', 'NZ', 'SG', 'MY', 'JP', 'KR', 'CN', 'HK', 'TW', 'IN', 'PH', 'TH', 'VN', 'ID', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'CH', 'AT', 'SE', 'NO', 'DK', 'FI'],
+      },
+      phone_number_collection: {
+        enabled: true,
+      },
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/payment-cancel`,
       metadata: {
