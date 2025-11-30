@@ -1,6 +1,30 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Airtable = require('airtable');
 
+// Country code to country name mapping
+const countryNames = {
+  'US': 'United States', 'CA': 'Canada', 'GB': 'United Kingdom', 'AU': 'Australia',
+  'NZ': 'New Zealand', 'SG': 'Singapore', 'MY': 'Malaysia', 'ID': 'Indonesia',
+  'PH': 'Philippines', 'TH': 'Thailand', 'VN': 'Vietnam', 'JP': 'Japan',
+  'KR': 'South Korea', 'CN': 'China', 'HK': 'Hong Kong', 'TW': 'Taiwan',
+  'IN': 'India', 'DE': 'Germany', 'FR': 'France', 'IT': 'Italy', 'ES': 'Spain',
+  'NL': 'Netherlands', 'BE': 'Belgium', 'CH': 'Switzerland', 'AT': 'Austria',
+  'SE': 'Sweden', 'NO': 'Norway', 'DK': 'Denmark', 'FI': 'Finland', 'IE': 'Ireland',
+  'PT': 'Portugal', 'GR': 'Greece', 'PL': 'Poland', 'CZ': 'Czech Republic',
+  'HU': 'Hungary', 'RO': 'Romania', 'BG': 'Bulgaria', 'HR': 'Croatia',
+  'AE': 'United Arab Emirates', 'SA': 'Saudi Arabia', 'IL': 'Israel', 'TR': 'Turkey',
+  'EG': 'Egypt', 'ZA': 'South Africa', 'NG': 'Nigeria', 'KE': 'Kenya',
+  'MX': 'Mexico', 'BR': 'Brazil', 'AR': 'Argentina', 'CL': 'Chile', 'CO': 'Colombia',
+  'PE': 'Peru', 'RU': 'Russia', 'UA': 'Ukraine', 'KZ': 'Kazakhstan',
+  'PK': 'Pakistan', 'BD': 'Bangladesh', 'LK': 'Sri Lanka', 'NP': 'Nepal',
+  'MM': 'Myanmar', 'KH': 'Cambodia', 'LA': 'Laos', 'MO': 'Macau',
+};
+
+const getCountryName = (code) => {
+  if (!code) return '';
+  return countryNames[code.toUpperCase()] || code;
+};
+
 module.exports = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -80,7 +104,7 @@ module.exports = async (req, res) => {
             'City': shippingAddress.city || '',
             'State': shippingAddress.state || '',
             'Postal Code': shippingAddress.postal_code || '',
-            'Country': shippingAddress.country || '',
+            'Country': getCountryName(shippingAddress.country) || '',
           },
         },
       ]);
