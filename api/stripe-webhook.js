@@ -45,16 +45,17 @@ module.exports = async (req, res) => {
       }).base(process.env.AIRTABLE_BASE_ID);
 
       // Extract shipping details from Stripe session
-      // Stripe uses 'shipping_details' for the shipping information
+      // Stripe stores address in customer_details when using shipping_address_collection
       const shipping = session.shipping_details || session.shipping || null;
+      const customerDetails = session.customer_details || {};
 
       console.log('Full session shipping_details:', JSON.stringify(session.shipping_details, null, 2));
       console.log('Full session shipping:', JSON.stringify(session.shipping, null, 2));
-      console.log('Customer details:', JSON.stringify(session.customer_details, null, 2));
+      console.log('Customer details:', JSON.stringify(customerDetails, null, 2));
 
-      // Extract name and address
-      const customerName = shipping?.name || session.customer_details?.name || '';
-      const shippingAddress = shipping?.address || {};
+      // Extract name and address - prioritize shipping, fallback to customer_details
+      const customerName = shipping?.name || customerDetails?.name || '';
+      const shippingAddress = shipping?.address || customerDetails?.address || {};
 
       console.log('Extracted customer name:', customerName);
       console.log('Extracted shipping address:', JSON.stringify(shippingAddress, null, 2));
