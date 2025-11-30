@@ -60,9 +60,17 @@ module.exports = async (req, res) => {
     });
   } catch (error) {
     console.error('Stripe error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      param: error.param,
+    });
     return res.status(500).json({
       error: 'Failed to create checkout session',
       details: error.message,
+      type: error.type,
+      code: error.code,
     });
   }
 };
