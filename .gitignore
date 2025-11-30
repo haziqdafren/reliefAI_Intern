@@ -23,3 +23,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .vercel
+
+# Sensitive keys backup
+STRIPE_KEYS_BACKUP.md
