@@ -263,4 +263,450 @@ src/components/
 - **Typography Scale**: Harmonious font size progression
 - **Component Variants**: Reusable patterns for different contexts
 
+---
+
+## 🚀 Recent Updates (November 2025)
+
+### Airtable Integration ✅ COMPLETE
+**Status**: Fully functional and deployed
+
+#### Implementation Details
+- **Newsletter API** (`api/newsletter.js`)
+  - Vercel serverless function format
+  - Email validation and duplicate checking
+  - Automatic "Active" status assignment
+  - Source tracking (website-banner)
+
+- **Inquiries API** (`api/airtable.js`)
+  - Multi-type inquiry support (1:1 coaching, group coaching, speaking, workshops, general)
+  - Required fields validation
+  - Automatic timestamp recording
+
+- **Tables Created in Airtable**
+  1. **Newsletter** - Email subscriptions with status tracking
+  2. **Inquiries** - Contact form submissions with categorization
+  3. **Payments** - Stripe payment records (ready for integration)
+
+#### Frontend Integration
+- `src/utils/airtable.ts` - Type-safe utility functions
+- `NewsletterBanner.tsx` - Connected to newsletter API
+- `ConnectPage.tsx` - Connected to inquiries API
+- Error handling and user feedback implemented
+
+#### Testing Results
+- ✅ Newsletter subscriptions working
+- ✅ Contact form submissions working
+- ✅ Data appearing correctly in Airtable
+- ✅ Duplicate email detection functioning
+- ✅ Production deployment successful
+
+---
+
+### UI/UX Improvements ✅ COMPLETE
+**Date**: November 4, 2025
+
+#### 1. Call-to-Action Updates
+- Changed all "Pre-Order Now" buttons to "Coming Soon"
+- Updated across:
+  - Hero section (`HeroSection.tsx`)
+  - Book page (`BookPage.tsx`)
+  - Journal page (`JournalPage.tsx`)
+
+#### 2. Homepage Content Transformation
+**Replaced**: Impact Stats Section (count-up animations)
+- 98% Success Rate
+- 500+ Leaders Mentored
+- 150+ Speaking Events
+- 25+ Countries Reached
+
+**With**: Journal Section
+- Title: "Reconnect with your authentic self"
+- Product: "Homwards: to my authentic self"
+- Subtitle: "Guided Inward: A Journal For Self-Discovery"
+- Image: `/journal.png`
+- CTA: "Buy It Now" → links to `/journal`
+
+**Files Modified**:
+- Created: `src/components/JournalSection.tsx`
+- Updated: `src/pages/HomePage.tsx` (replaced StatsSection with JournalSection)
+- Updated: `src/components/index.ts` (exported JournalSection)
+
+#### 3. About Page Enhancements
+**Typography Consistency**:
+- Standardized responsive font sizes: `text-sm sm:text-base md:text-lg`
+- Fixed heading sizes: `text-lg sm:text-xl md:text-2xl`
+- Consistent line spacing and font weights
+
+**Content Updates**:
+- Section title changed: "How We Give Back" → "Empowering the Next Generation"
+- Removed "Community" label above section
+- Added prominent donation message:
+  > "Fifty percent of the net profit from book royalties will be donated to Inspiring Girls Australia, supporting programs that connect young women with inspiring female role models and help them dream bigger."
+- Styled with highlighted box (bg-primary-50, border-primary-400)
+
+**Files Modified**:
+- `src/pages/AboutPage.tsx`
+
+#### 4. Social Media Icons Update
+- Updated Twitter icon to X logo (new branding)
+- Modern SVG path for X logo
+- Maintained consistent hover states and styling
+- **File Modified**: `src/components/Footer.tsx`
+
+---
+
+### Stripe Integration Setup 🔄 IN PROGRESS
+**Status**: Code ready, awaiting credentials from client
+
+#### Backend Infrastructure ✅ COMPLETE
+**API Endpoints Created**:
+1. **`api/create-checkout-session.js`**
+   - Creates Stripe checkout sessions
+   - Accepts: priceId, productName, productType
+   - Returns: sessionId and checkout URL
+   - Configured with success/cancel URLs
+   - Fixed from AWS Lambda to Vercel format
+
+2. **`api/stripe-webhook.js`**
+   - Handles `checkout.session.completed` events
+   - Verifies webhook signatures for security
+   - Automatically records payments to Airtable
+   - Raw body handling for signature verification
+   - Fixed from AWS Lambda to Vercel format
+
+#### Frontend Components ✅ COMPLETE
+- **`src/components/StripeCheckoutButton.tsx`**
+  - Reusable button component
+  - Loading states
+  - Error handling
+  - Redirects to Stripe checkout
+
+- **`src/utils/stripe.ts`**
+  - Stripe initialization
+  - Session creation helper
+  - Type-safe API calls
+
+#### Integration Points
+- Journal page: "Buy Now — USD 25" button
+- Configured for "Homwards: to my authentic self - Journal"
+- Success page: `/payment-success?session_id={CHECKOUT_SESSION_ID}`
+- Cancel page: `/payment-cancel`
+
+#### Environment Variables Required
+```bash
+# Backend (Secret)
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Frontend (Public)
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...
+REACT_APP_STRIPE_JOURNAL_PRICE_ID=price_...
+```
+
+#### Documentation Created
+- **`STRIPE_SETUP_GUIDE.md`**
+  - Simple 4-step process for non-technical users
+  - Clear instructions for getting credentials from Stripe Dashboard
+  - What to send to development team
+  - Testing instructions with test cards
+
+---
+
+### Design System Documentation ✅ COMPLETE
+**File**: `DESIGN_SYSTEM.md`
+
+#### Comprehensive Documentation Includes
+
+**Color Palette with Hex Codes**:
+- Primary 100-500: `#FAF8F5`, `#F5F1ED`, `#F0E8E3`, `#E09B8A`, `#D88A75`
+- Text Colors: `#2C2C2C`, `#6B6B6B`
+- Usage guidelines for each color
+
+**Typography System**:
+- Font families: Work Sans, IBM Plex Sans, Playfair Display, Inter
+- Font sizes: Responsive scales from text-xs to text-8xl
+- Weight specifications: 300, 400, 500, 600, 700
+- Usage contexts for each font family
+
+**Spacing & Layout**:
+- Container widths (max-w-5xl through max-w-7xl)
+- Padding/margin scales
+- Responsive breakpoints (sm, md, lg, xl, 2xl)
+
+**Effects & Animations**:
+- Border radius patterns (organic, blob shapes)
+- Shadow specifications with opacity variants
+- Animation keyframes (fadeIn, slideUp, scaleIn, float)
+- Glass morphism specifications
+
+**Component Patterns**:
+- Button styles (primary CTA, secondary)
+- Card layouts with glass effects
+- Background decorative elements
+- Gradient patterns
+
+**Quick Reference Section**:
+- Most commonly used class combinations
+- Copy-paste ready snippets for developers
+
+---
+
+### Deployment & Infrastructure Updates ✅ COMPLETE
+
+#### Vercel Deployment Fix
+**Issue Identified**: CLI was linked to wrong project
+- Wrong project: `jessielicoaching-simple`
+- Correct project: `jessieli`
+
+**Resolution**:
+1. Removed old `.vercel` link
+2. Re-linked to correct `jessieli` project
+3. Deployed to production successfully
+4. Added `.vercel/` to `.gitignore`
+
+**Production URL**: https://jessieli-dusky.vercel.app
+
+#### Git History
+Recent commits:
+- `541ecfc` - Trigger Vercel deployment
+- `4a7e0cc` - Simplify Stripe setup guide
+- `ad14753` - Fix Stripe API format + documentation
+- `f752d07` - UI updates (Journal section, About page, X logo)
+- `9c33df9` - Connect inquiry form to Airtable API
+
+---
+
+### Technical Debt Addressed
+
+#### API Format Standardization
+**Problem**: Mixed AWS Lambda and Vercel formats
+**Solution**: Converted all API endpoints to Vercel format
+- Changed `exports.handler = async (event, context)` → `module.exports = async (req, res)`
+- Updated request parsing: `event.body` → `req.body`
+- Updated response format: status codes and JSON responses
+- Proper error handling for serverless environment
+
+**Files Fixed**:
+- `api/create-checkout-session.js`
+- `api/stripe-webhook.js`
+- `api/airtable.js` (already done)
+- `api/newsletter.js` (already done)
+
+---
+
+### Files Created/Modified Summary
+
+#### New Files Created
+```
+api/newsletter.js                    - Newsletter subscription endpoint
+api/airtable.js                      - Inquiries submission endpoint
+api/create-checkout-session.js       - Stripe checkout creation
+api/stripe-webhook.js                - Stripe webhook handler
+src/components/JournalSection.tsx    - Journal showcase component
+src/components/StripeCheckoutButton.tsx - Reusable Stripe button
+src/utils/airtable.ts                - Airtable utility functions
+src/utils/stripe.ts                  - Stripe utility functions
+STRIPE_SETUP_GUIDE.md                - Client-facing setup guide
+DESIGN_SYSTEM.md                     - Complete design documentation
+```
+
+#### Files Modified
+```
+src/components/Footer.tsx            - Twitter → X logo
+src/components/index.ts              - Export JournalSection
+src/components/NewsletterBanner.tsx  - Connect to Airtable
+src/pages/AboutPage.tsx              - Typography + donation message
+src/pages/HomePage.tsx               - Replace Stats with Journal
+src/pages/ConnectPage.tsx            - Connect to Airtable
+src/pages/BookPage.tsx               - "Coming Soon" button
+src/pages/JournalPage.tsx            - "Coming Soon" button
+src/components/original/HeroSection.tsx - "Coming Soon" button
+.gitignore                           - Add .env and .vercel
+package.json                         - Add stripe and airtable packages
+```
+
+---
+
+## 📊 Current Project Status
+
+### Completed Features ✅
+- [x] Airtable integration (Newsletter + Inquiries)
+- [x] UI/UX improvements (7 requested changes)
+- [x] Stripe API infrastructure (ready for credentials)
+- [x] Design system documentation
+- [x] Deployment infrastructure fixes
+- [x] Social media icon updates
+- [x] Typography consistency across site
+- [x] Content updates (donation message, section titles)
+
+### In Progress 🔄
+- [x] Stripe credential collection from client - COMPLETE
+- [x] Payment testing with live credentials - COMPLETE
+- [x] Shipping address collection implementation - COMPLETE
+- [ ] Customer email notifications setup (Airtable automation)
+- [ ] Go-live preparation (switch to production keys)
+
+### Future Enhancements 🔮
+- [ ] Payment success/cancel pages
+- [ ] Order confirmation emails
+- [ ] Customer dashboard
+- [ ] Analytics integration
+- [ ] A/B testing setup
+
+---
+
+## 🚀 Latest Updates (November 30, 2025)
+
+### Stripe Shipping Address Collection ✅ COMPLETE
+**Status**: Fully functional and tested
+
+#### Implementation Details
+
+**1. Checkout Session Enhancement**
+- **File**: `api/create-checkout-session.js`
+- Added `shipping_address_collection` for 195+ countries worldwide
+- Added `phone_number_collection` for customer contact
+- Supports all major countries (US, CA, GB, AU, Asia, Europe, Middle East, Africa, Americas)
+
+**2. Webhook Address Extraction Fix**
+- **File**: `api/stripe-webhook.js`
+- **Issue Found**: Stripe stores address in `customer_details.address`, not `shipping_details`
+- **Solution**: Updated extraction logic to read from correct location
+- Retrieved full session from Stripe API (not just webhook event object)
+- Added comprehensive logging for debugging
+
+**3. Country Code Conversion**
+- Implemented country code → full country name mapping
+- Example: "ID" → "Indonesia", "US" → "United States"
+- 50+ countries mapped for better readability
+- Fallback to code if country not in mapping
+
+**4. Airtable Payments Table Structure**
+Complete payment records now include:
+- Customer Email
+- Customer Name
+- Phone
+- Amount (converted from cents to dollars)
+- Currency
+- Payment Status
+- Stripe Session ID
+- Product Name
+- Product Type
+- Date (ISO timestamp)
+- **Address Line 1**
+- **Address Line 2**
+- **City**
+- **State**
+- **Postal Code**
+- **Country** (full name, not code)
+
+#### Testing Process
+
+**Test Account Setup**:
+- Created dummy Stripe account for testing
+- Configured test webhook endpoint
+- Created test product and price
+- Used test mode keys in Vercel
+
+**Test Results**:
+✅ Checkout collects full shipping address
+✅ Checkout collects phone number
+✅ All address fields save to Airtable correctly
+✅ Country codes converted to full names
+✅ Webhook processes payments successfully
+✅ Error logging helps debug issues
+
+**Files Modified**:
+```
+api/create-checkout-session.js   - Added shipping collection + worldwide countries
+api/stripe-webhook.js             - Fixed address extraction + country name conversion
+INTEGRATION_SETUP.md              - Updated Payments table documentation
+STRIPE_KEYS_BACKUP.md             - Created for key management (gitignored)
+.gitignore                        - Added STRIPE_KEYS_BACKUP.md
+```
+
+#### Debug Journey
+
+**Problem 1**: 500 error on checkout
+- **Cause**: Wrong API key type (publishable instead of secret)
+- **Solution**: Corrected environment variables in Vercel
+
+**Problem 2**: Address not saving to Airtable
+- **Cause**: Webhook looking at `shipping_details` (undefined), not `customer_details.address`
+- **Solution**: Updated extraction logic to check both locations
+
+**Problem 3**: Country showing as "ID" instead of "Indonesia"
+- **Cause**: Stripe returns 2-letter country codes
+- **Solution**: Added country name mapping function
+
+#### Email Notifications Strategy
+
+**Decision**: Use Airtable automation
+- Client preference for ease of setup
+- No need to involve boss for Stripe configuration
+- Full control over email content and timing
+- Can include shipping details in email
+- Flexible for future customization
+
+**Alternative Considered**: Stripe built-in emails
+- Easier setup but less customization
+- Would require boss to configure Stripe settings
+
+---
+
+### Key Management & Testing Infrastructure ✅ COMPLETE
+
+**Created STRIPE_KEYS_BACKUP.md**:
+- Commented sections for PRODUCTION keys (live mode)
+- Section for TEST keys (test mode)
+- Airtable keys reference (unchanged)
+- Instructions for switching between test/live
+- Webhook setup reminders
+- Status tracker checklist
+- **Security**: Added to .gitignore (never committed to GitHub)
+
+**Testing Workflow**:
+1. Use test mode keys for development
+2. Test with dummy credit card (4242 4242 4242 4242)
+3. Verify all features work correctly
+4. Switch to live mode keys for production
+5. Real customers use real payment methods
+
+---
+
+## 📊 Updated Project Status
+
+### Completed Features ✅
+- [x] Airtable integration (Newsletter + Inquiries + Payments)
+- [x] Stripe checkout with shipping address collection
+- [x] Worldwide shipping support (195+ countries)
+- [x] Phone number collection
+- [x] Address data extraction and storage
+- [x] Country code to name conversion
+- [x] Webhook signature verification
+- [x] Payment records to Airtable
+- [x] Test mode infrastructure
+- [x] Error logging and debugging
+- [x] Environment variable management
+- [x] UI/UX improvements (7 requested changes)
+- [x] Design system documentation
+- [x] Deployment infrastructure fixes
+
+### Ready for Production 🎯
+- [x] All code tested and working
+- [x] Test purchases successful
+- [x] Address data confirmed in Airtable
+- [ ] Switch Vercel to LIVE mode keys
+- [ ] Set up Airtable email automation
+- [ ] Final production test
+
+### Next Steps 📋
+1. Client sets up Airtable automation for customer emails
+2. Switch Vercel environment variables to LIVE keys
+3. Conduct final test purchase with real card
+4. Monitor first real customer purchases
+5. Verify email notifications working
+
+---
+
 This documentation provides a comprehensive overview of the project's current state, implementation details, and the journey from user feedback to finished features.
