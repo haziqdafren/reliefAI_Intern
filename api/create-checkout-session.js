@@ -30,7 +30,9 @@ module.exports = async (req, res) => {
                'https://jessieli-dusky.vercel.app';
     }
 
-    // Create Stripe Checkout Session
+    // Create Stripe Checkout Session with automatic shipping calculation
+    // Note: Both shipping options will be shown, but customer selects based on their address
+    // Stripe will display them as options during checkout
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -45,16 +47,44 @@ module.exports = async (req, res) => {
       },
       shipping_options: [
         {
-          // Hong Kong shipping: $20 HKD
-          // TEST: shr_1SZurIPXS7HoGj2mxJI8aBtp
-          // LIVE: shr_1SPlrhLv7MB3T6fwmhiijYbq
-          shipping_rate: 'shr_1SZurIPXS7HoGj2mxJI8aBtp',
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 2000, // $20 HKD in cents
+              currency: 'hkd',
+            },
+            display_name: 'Hong Kong Shipping - $20 HKD',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 3,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 7,
+              },
+            },
+          },
         },
         {
-          // International shipping: $69 HKD
-          // TEST: shr_1SZurmPXS7HoGj2m39Pf0sg0
-          // LIVE: shr_1SZkNaLv7MB3T6fwcjM3t7Y3
-          shipping_rate: 'shr_1SZurmPXS7HoGj2m39Pf0sg0',
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 6900, // $69 HKD in cents
+              currency: 'hkd',
+            },
+            display_name: 'International Shipping - $69 HKD',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 7,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 14,
+              },
+            },
+          },
         },
       ],
       phone_number_collection: {
