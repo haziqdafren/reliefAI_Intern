@@ -102,7 +102,7 @@ export const PaymentSuccessPage = () => {
                     Save Your Order Reference
                   </h3>
                   <p className="text-sm md:text-base text-text-secondary leading-relaxed">
-                    <strong>Important:</strong> Please save your order reference number below. No automatic email confirmation will be sent. Take a screenshot or copy the reference number for your records.
+                    <strong>Important:</strong> Please save your order reference number below. Take a screenshot or copy the reference number for your records.
                   </p>
                 </div>
               </div>
