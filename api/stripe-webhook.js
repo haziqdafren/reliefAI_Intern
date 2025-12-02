@@ -58,10 +58,11 @@ module.exports = async (req, res) => {
       // Retrieve the full session with shipping details
       // The webhook event doesn't include all details by default
       const session = await stripe.checkout.sessions.retrieve(sessionFromWebhook.id, {
-        expand: ['customer', 'line_items']
+        expand: ['customer', 'line_items', 'total_details.breakdown']
       });
 
       console.log('Retrieved full session:', session.id);
+      console.log('Session total_details:', JSON.stringify(session.total_details, null, 2));
 
       // Initialize Airtable
       const base = new Airtable({
@@ -84,6 +85,18 @@ module.exports = async (req, res) => {
       console.log('Extracted customer name:', customerName);
       console.log('Extracted shipping address:', JSON.stringify(shippingAddress, null, 2));
 
+      // Extract shipping cost from total_details
+      const shippingCost = session.shipping_cost?.amount_total || 0;
+      const shippingCostFormatted = shippingCost / 100; // Convert from cents to dollars
+
+      // Calculate subtotal (product price before shipping)
+      const subtotal = session.amount_subtotal / 100;
+      const totalAmount = session.amount_total / 100;
+
+      console.log('Shipping cost:', shippingCostFormatted);
+      console.log('Subtotal:', subtotal);
+      console.log('Total amount:', totalAmount);
+
       // Create payment record in Airtable
       await base(process.env.AIRTABLE_PAYMENTS_TABLE || 'Payments').create([
         {
@@ -91,7 +104,9 @@ module.exports = async (req, res) => {
             'Customer Email': session.customer_details?.email || '',
             'Customer Name': customerName,
             'Phone': session.customer_details?.phone || '',
-            'Amount': session.amount_total / 100, // Convert from cents to dollars
+            'Subtotal': subtotal, // Product price only
+            'Shipping Fee': shippingCostFormatted, // Shipping cost
+            'Total Amount': totalAmount, // Product + Shipping
             'Currency': session.currency?.toUpperCase() || 'USD',
             'Payment Status': 'Completed',
             'Stripe Session ID': session.id,
