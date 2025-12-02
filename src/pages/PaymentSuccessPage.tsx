@@ -99,10 +99,10 @@ export const PaymentSuccessPage = () => {
                 </div>
                 <div>
                   <h3 className="font-corporate font-bold text-lg text-text-primary mb-2">
-                    Confirmation Email
+                    Save Your Order Reference
                   </h3>
                   <p className="text-sm md:text-base text-text-secondary leading-relaxed">
-                    You'll receive an email confirmation with your order details within the next few minutes. Please check your spam folder if you don't see it.
+                    <strong>Important:</strong> Please save your order reference number below. No automatic email confirmation will be sent. Take a screenshot or copy the reference number for your records.
                   </p>
                 </div>
               </div>
@@ -140,9 +140,15 @@ export const PaymentSuccessPage = () => {
 
             {/* Order Reference */}
             {sessionId && (
-              <div className="mt-8 p-4 bg-primary-50 rounded-xl border border-primary-200">
-                <p className="text-sm text-text-secondary text-center">
-                  Order Reference: <span className="font-corporate font-medium text-text-primary">{sessionId.substring(0, 24)}...</span>
+              <div className="mt-8 p-6 bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl border-2 border-primary-300 shadow-lg">
+                <p className="text-xs uppercase tracking-wider text-primary-600 font-corporate font-bold mb-2 text-center">
+                  Your Order Reference Number
+                </p>
+                <p className="text-base md:text-lg font-mono text-text-primary text-center break-all bg-white/80 p-4 rounded-lg border border-primary-200 select-all">
+                  {sessionId}
+                </p>
+                <p className="text-xs text-text-secondary text-center mt-3">
+                  Please save this reference number. Click to select and copy.
                 </p>
               </div>
             )}
