@@ -46,11 +46,15 @@ module.exports = async (req, res) => {
       shipping_options: [
         {
           // Hong Kong shipping: $20 HKD
-          shipping_rate: 'shr_1SPlrhLv7MB3T6fwmhiijYbq',
+          // TEST: shr_1SZurIPXS7HoGj2mxJI8aBtp
+          // LIVE: shr_1SPlrhLv7MB3T6fwmhiijYbq
+          shipping_rate: 'shr_1SZurIPXS7HoGj2mxJI8aBtp',
         },
         {
           // International shipping: $69 HKD
-          shipping_rate: 'shr_1SZkNaLv7MB3T6fwcjM3t7Y3',
+          // TEST: shr_1SZurmPXS7HoGj2m39Pf0sg0
+          // LIVE: shr_1SZkNaLv7MB3T6fwcjM3t7Y3
+          shipping_rate: 'shr_1SZurmPXS7HoGj2m39Pf0sg0',
         },
       ],
       phone_number_collection: {
