@@ -146,7 +146,7 @@ module.exports = async (req, res) => {
 
           // Send email
           const emailResponse = await resend.emails.send({
-            from: 'Jessie Li <orders@jessieli.co>',
+            from: 'Jessie Li <onboarding@resend.dev>',
             to: session.customer_details?.email || '',
             subject: 'Order Confirmation - Thank you for your purchase!',
             html: `
