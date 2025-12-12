@@ -41,7 +41,7 @@ The website is ready to accept payments. We just need **4 credentials** from you
 3. Click **"+ Add endpoint"**
 4. Paste this URL:
    ```
-   https://jessieli-dusky.vercel.app/api/stripe-webhook
+   https://www.jessieli.co/api/stripe-webhook
    ```
 5. Click **"Select events"** and choose: `checkout.session.completed`
 6. Click **"Add endpoint"**
@@ -50,7 +50,7 @@ The website is ready to accept payments. We just need **4 credentials** from you
 
 ---
 
-## ✅ Send Us These 4 Items
+## ✅ Send Us These 5 Items
 
 Copy and send us these credentials securely:
 
@@ -59,7 +59,10 @@ Copy and send us these credentials securely:
 2. Secret Key: sk_test_XXXXX...
 3. Price ID: price_XXXXX...
 4. Webhook Secret: whsec_XXXXX...
+5. Resend API Key: re_XXXXX... (for sending order emails)
 ```
+
+**Note:** For step 5 (Resend), please see **RESEND_SETUP_GUIDE.md** for detailed instructions.
 
 **That's it!** We'll add them to the website and let you know when it's ready to test.
 

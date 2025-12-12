@@ -1,5 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Airtable = require('airtable');
+const { Resend } = require('resend');
 
 // Country code to country name mapping
 const countryNames = {
@@ -125,6 +126,119 @@ module.exports = async (req, res) => {
       ]);
 
       console.log('Payment recorded in Airtable:', session.id);
+
+      // Send order confirmation email via Resend
+      try {
+        const resendApiKey = process.env.RESEND_API_KEY;
+
+        if (resendApiKey) {
+          const resend = new Resend(resendApiKey);
+
+          // Format the shipping address
+          const fullAddress = [
+            shippingAddress.line1,
+            shippingAddress.line2,
+            shippingAddress.city,
+            shippingAddress.state,
+            shippingAddress.postal_code,
+            getCountryName(shippingAddress.country)
+          ].filter(Boolean).join(', ');
+
+          // Send email
+          const emailResponse = await resend.emails.send({
+            from: 'Jessie Li <orders@jessieli.co>',
+            to: session.customer_details?.email || '',
+            subject: 'Order Confirmation - Thank you for your purchase!',
+            html: `
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <style>
+                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                  .header { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                  .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+                  .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+                  .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+                  .detail-label { font-weight: bold; color: #666; }
+                  .total { font-size: 18px; font-weight: bold; color: #ec4899; padding-top: 10px; border-top: 2px solid #ec4899; }
+                  .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>Thank You for Your Order! 🎉</h1>
+                  </div>
+                  <div class="content">
+                    <p>Hi ${customerName},</p>
+                    <p>Your order has been confirmed! We're excited to send your journal to you.</p>
+
+                    <div class="order-details">
+                      <h2 style="color: #ec4899; margin-top: 0;">Order Details</h2>
+
+                      <div class="detail-row">
+                        <span class="detail-label">Order Reference:</span>
+                        <span>${session.id}</span>
+                      </div>
+
+                      <div class="detail-row">
+                        <span class="detail-label">Product:</span>
+                        <span>${session.metadata?.productName || 'Homwards: to my authentic self - Journal'}</span>
+                      </div>
+
+                      <div class="detail-row">
+                        <span class="detail-label">Subtotal:</span>
+                        <span>${subtotal.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+
+                      <div class="detail-row">
+                        <span class="detail-label">Shipping Fee:</span>
+                        <span>${shippingCostFormatted.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+
+                      <div class="detail-row total">
+                        <span>Total Paid:</span>
+                        <span>${totalAmount.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+                    </div>
+
+                    <div class="order-details">
+                      <h2 style="color: #ec4899; margin-top: 0;">Shipping Address</h2>
+                      <p><strong>${customerName}</strong></p>
+                      <p>${fullAddress}</p>
+                      ${session.customer_details?.phone ? `<p>Phone: ${session.customer_details.phone}</p>` : ''}
+                    </div>
+
+                    <div style="background: #fff3e0; padding: 15px; border-left: 4px solid #ec4899; margin: 20px 0; border-radius: 4px;">
+                      <p style="margin: 0;"><strong>What's next?</strong></p>
+                      <p style="margin: 5px 0 0 0;">We'll process your order and send you a shipping confirmation once your journal is on its way.</p>
+                    </div>
+
+                    <p>If you have any questions about your order, please reply to this email with your order reference: <strong>${session.id}</strong></p>
+
+                    <p>With gratitude,<br><strong>Jessie Li</strong></p>
+                  </div>
+
+                  <div class="footer">
+                    <p>This is an automated confirmation email.</p>
+                    <p>© ${new Date().getFullYear()} Jessie Li. All rights reserved.</p>
+                  </div>
+                </div>
+              </body>
+              </html>
+            `,
+          });
+
+          console.log('Order confirmation email sent via Resend:', emailResponse);
+        } else {
+          console.log('RESEND_API_KEY not configured - skipping email');
+        }
+      } catch (emailError) {
+        console.error('Error sending order confirmation email:', emailError);
+        // Don't fail the webhook - payment was already processed
+      }
+
     } catch (error) {
       console.error('Error recording payment to Airtable:', error);
       // Don't fail the webhook - Stripe will retry
