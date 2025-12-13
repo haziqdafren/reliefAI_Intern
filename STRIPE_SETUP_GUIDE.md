@@ -79,10 +79,45 @@ Copy and send us these credentials securely:
 
 ## When You're Ready to Accept Real Payments
 
-Later, when you want to go live:
-1. Switch to **Live Mode** in Stripe
-2. Get the same 4 credentials (they'll start with `pk_live_` and `sk_live_`)
-3. Send them to us
-4. We'll update the website and you'll be live!
+When you want to start accepting REAL payments:
 
-**Note:** These are TEST credentials - no real money will be charged yet.
+### 🔴 Switching from TEST to LIVE Mode
+
+1. **Log into Stripe Dashboard**: https://dashboard.stripe.com
+2. **Toggle to "Live mode"** (switch in top right corner - it will turn from blue to green)
+3. **Repeat ALL the steps above** to get LIVE credentials:
+   - ✅ Publishable key (starts with `pk_live_...`)
+   - ✅ Secret key (starts with `sk_live_...`)
+   - ✅ Price ID for journal (create product in LIVE mode)
+   - ✅ Webhook secret (create new webhook endpoint in LIVE mode)
+4. **Update Vercel Environment Variables** with the LIVE keys
+5. **Redeploy the website**
+
+### ⚠️ IMPORTANT: Live Mode Checklist
+
+Before going live, make sure:
+- ✅ Test mode worked perfectly (customer emails, boss notifications, Airtable tracking)
+- ✅ Shipping notification system tested and working
+- ✅ All email addresses verified (orders@jessieli.co, hello@jessieli.co)
+- ✅ Stripe account fully verified and able to accept payments
+- ✅ Bank account connected to Stripe for payouts
+- ✅ Make a test purchase first with a small amount
+
+### 📋 LIVE Mode Webhook Setup
+
+When creating the webhook in LIVE mode:
+```
+Endpoint URL: https://jessieli.co/api/stripe-webhook
+Events to listen to: checkout.session.completed
+```
+
+**Note:** You MUST create a new webhook endpoint in LIVE mode. The TEST mode webhook won't work for real payments.
+
+---
+
+## Current Status
+
+✅ **TEST mode credentials** - No real money charged
+🔄 **Ready to switch to LIVE mode** when you're ready
+
+**Reminder:** In TEST mode, use card number `4242 4242 4242 4242` for testing.
