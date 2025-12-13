@@ -27,6 +27,34 @@ export const ShipNotificationPage: React.FC = () => {
     'Other'
   ];
 
+  // Reusable styles
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    marginBottom: '10px',
+    fontWeight: '600',
+    color: '#2C2C2C',
+    fontSize: '15px'
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '14px 16px',
+    border: '2px solid #F0E8E3',
+    borderRadius: '10px',
+    fontSize: '15px',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.2s, box-shadow 0.2s',
+    outline: 'none'
+  };
+
+  const smallTextStyle: React.CSSProperties = {
+    color: '#6B6B6B',
+    fontSize: '13px',
+    display: 'block',
+    marginTop: '6px',
+    lineHeight: '1.5'
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -78,41 +106,69 @@ export const ShipNotificationPage: React.FC = () => {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(to bottom, #FAF8F5, #F0E8E3)',
-      padding: '40px 20px'
+      paddingTop: '120px', // Space for navbar
+      paddingBottom: '60px',
+      paddingLeft: '20px',
+      paddingRight: '20px'
     }}>
       <div style={{
-        maxWidth: '600px',
+        maxWidth: '700px',
         margin: '0 auto',
         background: 'white',
-        borderRadius: '12px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        borderRadius: '16px',
+        boxShadow: '0 8px 30px rgba(216, 138, 117, 0.15)',
         overflow: 'hidden'
       }}>
         {/* Header */}
         <div style={{
           background: 'linear-gradient(135deg, #D88A75 0%, #E09B8A 100%)',
           color: 'white',
-          padding: '30px',
+          padding: '40px 30px',
           textAlign: 'center'
         }}>
-          <h1 style={{ margin: '0 0 10px 0', fontSize: '28px' }}>📦 Send Shipping Notification</h1>
-          <p style={{ margin: 0, opacity: 0.95 }}>Notify customer that their order has shipped</p>
+          <h1 style={{
+            margin: '0 0 12px 0',
+            fontSize: 'clamp(24px, 5vw, 32px)',
+            fontWeight: '700',
+            letterSpacing: '-0.5px'
+          }}>📦 Send Shipping Notification</h1>
+          <p style={{
+            margin: 0,
+            opacity: 0.95,
+            fontSize: 'clamp(14px, 3vw, 16px)'
+          }}>Notify customer that their order has shipped</p>
         </div>
 
         {/* Success Message */}
         {success && responseData && (
           <div style={{
-            margin: '20px 20px 0 20px',
-            padding: '20px',
+            margin: '24px',
+            padding: '24px',
             background: '#e8f5e9',
-            borderLeft: '4px solid #4caf50',
-            borderRadius: '4px'
+            borderLeft: '5px solid #4caf50',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(76, 175, 80, 0.1)'
           }}>
-            <h3 style={{ margin: '0 0 10px 0', color: '#2e7d32' }}>✅ Notification Sent Successfully!</h3>
-            <p style={{ margin: '5px 0', color: '#1b5e20' }}>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#2e7d32',
+              fontSize: '18px',
+              fontWeight: '600'
+            }}>✅ Notification Sent Successfully!</h3>
+            <p style={{
+              margin: '8px 0',
+              color: '#1b5e20',
+              fontSize: '15px',
+              lineHeight: '1.6'
+            }}>
               <strong>Email sent to:</strong> {responseData.sentTo}
             </p>
-            <p style={{ margin: '5px 0', color: '#1b5e20' }}>
+            <p style={{
+              margin: '8px 0',
+              color: '#1b5e20',
+              fontSize: '15px',
+              lineHeight: '1.6'
+            }}>
               <strong>Tracking:</strong> {responseData.trackingNumber} ({responseData.carrier})
             </p>
           </div>
@@ -121,26 +177,40 @@ export const ShipNotificationPage: React.FC = () => {
         {/* Error Message */}
         {error && (
           <div style={{
-            margin: '20px 20px 0 20px',
-            padding: '20px',
+            margin: '24px',
+            padding: '24px',
             background: '#ffebee',
-            borderLeft: '4px solid #f44336',
-            borderRadius: '4px'
+            borderLeft: '5px solid #f44336',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(244, 67, 54, 0.1)'
           }}>
-            <h3 style={{ margin: '0 0 10px 0', color: '#c62828' }}>❌ Error</h3>
-            <p style={{ margin: 0, color: '#b71c1c' }}>{error}</p>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#c62828',
+              fontSize: '18px',
+              fontWeight: '600'
+            }}>❌ Error</h3>
+            <p style={{
+              margin: 0,
+              color: '#b71c1c',
+              fontSize: '15px',
+              lineHeight: '1.6'
+            }}>{error}</p>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ padding: '30px' }}>
+        <form onSubmit={handleSubmit} style={{
+          padding: 'clamp(20px, 5vw, 40px)'
+        }}>
           {/* Order Reference */}
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '24px' }}>
             <label style={{
               display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
+              marginBottom: '10px',
+              fontWeight: '600',
+              color: '#2C2C2C',
+              fontSize: '15px'
             }}>
               Order Reference <span style={{ color: '#D88A75' }}>*</span>
             </label>
@@ -153,27 +223,31 @@ export const ShipNotificationPage: React.FC = () => {
               required
               style={{
                 width: '100%',
-                padding: '12px',
+                padding: '14px 16px',
                 border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
+                borderRadius: '10px',
+                fontSize: '15px',
                 fontFamily: 'monospace',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                transition: 'border-color 0.2s',
+                outline: 'none'
               }}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             />
-            <small style={{ color: '#6B6B6B', fontSize: '13px' }}>
+            <small style={{
+              color: '#6B6B6B',
+              fontSize: '13px',
+              display: 'block',
+              marginTop: '6px'
+            }}>
               From the order notification email (Stripe Session ID)
             </small>
           </div>
 
           {/* Tracking Number */}
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
-            }}>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={labelStyle}>
               Tracking Number <span style={{ color: '#D88A75' }}>*</span>
             </label>
             <input
@@ -183,26 +257,15 @@ export const ShipNotificationPage: React.FC = () => {
               onChange={handleInputChange}
               placeholder="1Z999AA10123456784"
               required
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontFamily: 'monospace',
-                boxSizing: 'border-box'
-              }}
+              style={{ ...inputStyle, fontFamily: 'monospace' }}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             />
           </div>
 
           {/* Carrier */}
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
-            }}>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={labelStyle}>
               Carrier <span style={{ color: '#D88A75' }}>*</span>
             </label>
             <select
@@ -210,15 +273,9 @@ export const ShipNotificationPage: React.FC = () => {
               value={formData.carrier}
               onChange={handleInputChange}
               required
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
-                background: 'white',
-                boxSizing: 'border-box'
-              }}
+              style={{ ...inputStyle, cursor: 'pointer' }}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             >
               {carriers.map(carrier => (
                 <option key={carrier} value={carrier}>{carrier}</option>
@@ -227,13 +284,8 @@ export const ShipNotificationPage: React.FC = () => {
           </div>
 
           {/* Estimated Delivery (Optional) */}
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
-            }}>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={labelStyle}>
               Estimated Delivery Date (Optional)
             </label>
             <input
@@ -242,25 +294,15 @@ export const ShipNotificationPage: React.FC = () => {
               value={formData.estimatedDelivery}
               onChange={handleInputChange}
               min={new Date().toISOString().split('T')[0]}
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
-                boxSizing: 'border-box'
-              }}
+              style={inputStyle}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             />
           </div>
 
           {/* Tracking URL (Optional) */}
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
-            }}>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={labelStyle}>
               Custom Tracking URL (Optional)
             </label>
             <input
@@ -269,28 +311,18 @@ export const ShipNotificationPage: React.FC = () => {
               value={formData.trackingUrl}
               onChange={handleInputChange}
               placeholder="https://..."
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
-                boxSizing: 'border-box'
-              }}
+              style={inputStyle}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             />
-            <small style={{ color: '#6B6B6B', fontSize: '13px' }}>
+            <small style={smallTextStyle}>
               Leave blank to auto-generate based on carrier
             </small>
           </div>
 
           {/* Notes (Optional) */}
-          <div style={{ marginBottom: '25px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: 'bold',
-              color: '#2C2C2C'
-            }}>
+          <div style={{ marginBottom: '30px' }}>
+            <label style={labelStyle}>
               Internal Notes (Optional)
             </label>
             <textarea
@@ -298,19 +330,18 @@ export const ShipNotificationPage: React.FC = () => {
               value={formData.notes}
               onChange={handleInputChange}
               placeholder="Any internal notes about this shipment..."
-              rows={3}
+              rows={4}
               style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #F0E8E3',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontFamily: 'inherit',
+                ...inputStyle,
                 resize: 'vertical',
-                boxSizing: 'border-box'
+                minHeight: '100px',
+                fontFamily: 'inherit',
+                lineHeight: '1.5'
               }}
+              onFocus={(e) => e.target.style.borderColor = '#D88A75'}
+              onBlur={(e) => e.target.style.borderColor = '#F0E8E3'}
             />
-            <small style={{ color: '#6B6B6B', fontSize: '13px' }}>
+            <small style={smallTextStyle}>
               These notes are for your reference only and won't be sent to the customer
             </small>
           </div>
@@ -321,21 +352,26 @@ export const ShipNotificationPage: React.FC = () => {
             disabled={loading}
             style={{
               width: '100%',
-              padding: '16px',
+              padding: '18px 24px',
               background: loading ? '#ccc' : 'linear-gradient(135deg, #D88A75 0%, #E09B8A 100%)',
               color: 'white',
               border: 'none',
-              borderRadius: '25px',
-              fontSize: '18px',
-              fontWeight: 'bold',
+              borderRadius: '12px',
+              fontSize: 'clamp(16px, 3vw, 18px)',
+              fontWeight: '700',
               cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'transform 0.2s',
+              transition: 'all 0.3s ease',
+              boxShadow: loading ? 'none' : '0 4px 15px rgba(216, 138, 117, 0.3)',
             }}
             onMouseOver={(e) => {
-              if (!loading) e.currentTarget.style.transform = 'translateY(-2px)';
+              if (!loading) {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(216, 138, 117, 0.4)';
+              }
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(216, 138, 117, 0.3)';
             }}
           >
             {loading ? '📤 Sending...' : '📧 Send Tracking Email to Customer'}
@@ -343,15 +379,25 @@ export const ShipNotificationPage: React.FC = () => {
 
           {/* Info Box */}
           <div style={{
-            marginTop: '20px',
-            padding: '15px',
+            marginTop: '24px',
+            padding: '20px',
             background: '#F0E8E3',
-            borderRadius: '8px',
+            borderRadius: '10px',
             fontSize: '14px',
-            color: '#6B6B6B'
+            color: '#6B6B6B',
+            borderLeft: '4px solid #D88A75'
           }}>
-            <p style={{ margin: '0 0 8px 0' }}><strong>What happens when you submit:</strong></p>
-            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+            <p style={{
+              margin: '0 0 12px 0',
+              fontWeight: '600',
+              color: '#2C2C2C',
+              fontSize: '15px'
+            }}>What happens when you submit:</p>
+            <ul style={{
+              margin: 0,
+              paddingLeft: '20px',
+              lineHeight: '1.8'
+            }}>
               <li>Customer receives tracking email instantly</li>
               <li>Shipment record created in Airtable</li>
               <li>Customer info auto-filled from order</li>
