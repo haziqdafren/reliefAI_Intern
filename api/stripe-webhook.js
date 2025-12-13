@@ -154,15 +154,15 @@ module.exports = async (req, res) => {
               <html>
               <head>
                 <style>
-                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                  body { font-family: 'Playfair Display', 'Inter', Arial, sans-serif; line-height: 1.6; color: #2C2C2C; }
                   .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                  .header { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-                  .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-                  .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-                  .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-                  .detail-label { font-weight: bold; color: #666; }
-                  .total { font-size: 18px; font-weight: bold; color: #ec4899; padding-top: 10px; border-top: 2px solid #ec4899; }
-                  .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
+                  .header { background: linear-gradient(135deg, #D88A75 0%, #E09B8A 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                  .content { background: #FAF8F5; padding: 30px; border-radius: 0 0 8px 8px; }
+                  .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #F0E8E3; }
+                  .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F5F1ED; }
+                  .detail-label { font-weight: bold; color: #6B6B6B; }
+                  .total { font-size: 18px; font-weight: bold; color: #D88A75; padding-top: 10px; border-top: 2px solid #D88A75; }
+                  .footer { text-align: center; padding: 20px; color: #6B6B6B; font-size: 14px; }
                 </style>
               </head>
               <body>
@@ -175,7 +175,7 @@ module.exports = async (req, res) => {
                     <p>Your order has been confirmed! We're excited to send your journal to you.</p>
 
                     <div class="order-details">
-                      <h2 style="color: #ec4899; margin-top: 0;">Order Details</h2>
+                      <h2 style="color: #D88A75; margin-top: 0;">Order Details</h2>
 
                       <div class="detail-row">
                         <span class="detail-label">Order Reference:</span>
@@ -204,13 +204,13 @@ module.exports = async (req, res) => {
                     </div>
 
                     <div class="order-details">
-                      <h2 style="color: #ec4899; margin-top: 0;">Shipping Address</h2>
+                      <h2 style="color: #D88A75; margin-top: 0;">Shipping Address</h2>
                       <p><strong>${customerName}</strong></p>
                       <p>${fullAddress}</p>
                       ${session.customer_details?.phone ? `<p>Phone: ${session.customer_details.phone}</p>` : ''}
                     </div>
 
-                    <div style="background: #fff3e0; padding: 15px; border-left: 4px solid #ec4899; margin: 20px 0; border-radius: 4px;">
+                    <div style="background: #F0E8E3; padding: 15px; border-left: 4px solid #D88A75; margin: 20px 0; border-radius: 4px;">
                       <p style="margin: 0;"><strong>What's next?</strong></p>
                       <p style="margin: 5px 0 0 0;">We'll process your order and send you a shipping confirmation once your journal is on its way.</p>
                     </div>
@@ -231,6 +231,106 @@ module.exports = async (req, res) => {
           });
 
           console.log('Order confirmation email sent via Resend:', emailResponse);
+
+          // Send notification email to boss
+          const bossEmailResponse = await resend.emails.send({
+            from: 'Jessie Li Orders <orders@jessieli.co>',
+            to: 'hello@jessieli.co',
+            subject: `New Order: ${customerName} - ${session.metadata?.productName || 'Journal'}`,
+            html: `
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <style>
+                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                  .header { background: linear-gradient(135deg, #D88A75 0%, #E09B8A 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                  .content { background: #FAF8F5; padding: 30px; border-radius: 0 0 8px 8px; }
+                  .alert-box { background: #fff3e0; border-left: 4px solid #D88A75; padding: 15px; margin: 20px 0; border-radius: 4px; }
+                  .customer-info { background: white; padding: 20px; border-radius: 8px; margin: 15px 0; border: 1px solid #F0E8E3; }
+                  .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #F5F1ED; }
+                  .label { font-weight: bold; color: #6B6B6B; }
+                  .value { color: #2C2C2C; }
+                  .total { font-size: 18px; font-weight: bold; color: #D88A75; padding-top: 10px; border-top: 2px solid #D88A75; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>📦 New Order Received!</h1>
+                  </div>
+                  <div class="content">
+                    <div class="alert-box">
+                      <p style="margin: 0;"><strong>Action Required:</strong> Ship this order</p>
+                      <p style="margin: 5px 0 0 0;">Order Reference: <strong>${session.id}</strong></p>
+                    </div>
+
+                    <div class="customer-info">
+                      <h2 style="color: #D88A75; margin-top: 0;">Customer Information</h2>
+                      <div class="info-row">
+                        <span class="label">Name:</span>
+                        <span class="value">${customerName}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="label">Email:</span>
+                        <span class="value">${session.customer_details?.email || 'N/A'}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="label">Phone:</span>
+                        <span class="value">${session.customer_details?.phone || 'N/A'}</span>
+                      </div>
+                    </div>
+
+                    <div class="customer-info">
+                      <h2 style="color: #D88A75; margin-top: 0;">Shipping Address</h2>
+                      <p style="margin: 0; line-height: 1.8;">
+                        <strong>${customerName}</strong><br>
+                        ${shippingAddress.line1 || ''}<br>
+                        ${shippingAddress.line2 ? shippingAddress.line2 + '<br>' : ''}
+                        ${shippingAddress.city || ''}, ${shippingAddress.state || ''} ${shippingAddress.postal_code || ''}<br>
+                        ${getCountryName(shippingAddress.country) || ''}
+                      </p>
+                    </div>
+
+                    <div class="customer-info">
+                      <h2 style="color: #D88A75; margin-top: 0;">Order Details</h2>
+                      <div class="info-row">
+                        <span class="label">Product:</span>
+                        <span class="value">${session.metadata?.productName || 'Homwards Journal'}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="label">Subtotal:</span>
+                        <span class="value">${subtotal.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="label">Shipping Fee:</span>
+                        <span class="value">${shippingCostFormatted.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+                      <div class="info-row total">
+                        <span>Total Paid:</span>
+                        <span>${totalAmount.toFixed(2)} ${session.currency?.toUpperCase()}</span>
+                      </div>
+                    </div>
+
+                    <div style="background: #F0E8E3; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                      <p style="margin: 0;"><strong>Next Steps:</strong></p>
+                      <ol style="margin: 10px 0 0 0; padding-left: 20px;">
+                        <li>Package the journal</li>
+                        <li>Print shipping label with above address</li>
+                        <li>Ship and get tracking number</li>
+                        <li>Update customer via email (optional)</li>
+                      </ol>
+                    </div>
+
+                    <p style="color: #6B6B6B; font-size: 14px;">This order has been automatically recorded in Airtable.</p>
+                  </div>
+                </div>
+              </body>
+              </html>
+            `,
+          });
+
+          console.log('Boss notification email sent via Resend:', bossEmailResponse);
         } else {
           console.log('RESEND_API_KEY not configured - skipping email');
         }
