@@ -9,4 +9,5 @@ export { GuidedJournalPage } from './GuidedJournalPage';
 export { SpeakerKitPage } from './SpeakerKitPage';
 export { PaymentSuccessPage } from './PaymentSuccessPage';
 export { PaymentCancelPage } from './PaymentCancelPage';
+export { ShipNotificationPage } from './ShipNotificationPage';
 export { NotFoundPage } from './NotFoundPage';

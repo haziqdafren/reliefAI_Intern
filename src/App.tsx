@@ -16,6 +16,7 @@ import {
   SpeakerKitPage,
   PaymentSuccessPage,
   PaymentCancelPage,
+  ShipNotificationPage,
   NotFoundPage
 } from './pages';
 
@@ -39,6 +40,7 @@ const AppContent = () => {
         <Route path="/speaker-kit" element={<SpeakerKitPage />} />
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/payment-cancel" element={<PaymentCancelPage />} />
+        <Route path="/ship-notification" element={<ShipNotificationPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

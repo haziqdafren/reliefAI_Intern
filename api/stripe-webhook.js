@@ -252,6 +252,7 @@ module.exports = async (req, res) => {
                   .label { font-weight: bold; color: #6B6B6B; }
                   .value { color: #2C2C2C; }
                   .total { font-size: 18px; font-weight: bold; color: #D88A75; padding-top: 10px; border-top: 2px solid #D88A75; }
+                  .ship-button { display: inline-block; background: linear-gradient(135deg, #D88A75 0%, #E09B8A 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; margin: 15px 0; text-align: center; }
                 </style>
               </head>
               <body>
@@ -318,8 +319,17 @@ module.exports = async (req, res) => {
                         <li>Package the journal</li>
                         <li>Print shipping label with above address</li>
                         <li>Ship and get tracking number</li>
-                        <li>Update customer via email (optional)</li>
+                        <li>Click button below to send tracking to customer</li>
                       </ol>
+                    </div>
+
+                    <div style="text-align: center; padding: 20px 0;">
+                      <a href="https://jessieli.co/ship-notification?order=${encodeURIComponent(session.id)}" class="ship-button">
+                        📦 Send Shipping Notification
+                      </a>
+                      <p style="margin: 10px 0 0 0; font-size: 13px; color: #6B6B6B;">
+                        This will open a form to send tracking info to the customer
+                      </p>
                     </div>
 
                     <p style="color: #6B6B6B; font-size: 14px;">This order has been automatically recorded in Airtable.</p>
