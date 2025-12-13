@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const ShipNotificationPage: React.FC = () => {
+export const ShipNotificationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     orderReference: searchParams.get('order') || '',
@@ -363,5 +363,3 @@ const ShipNotificationPage: React.FC = () => {
     </div>
   );
 };
-
-export default ShipNotificationPage;
