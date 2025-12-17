@@ -16,6 +16,7 @@ export { BalanceSection } from './BalanceSection';
 export { BookSection } from './BookSection';
 export { CoachingSection } from './CoachingSection';
 export { TestimonialsSection } from './TestimonialsSection';
+export { JournalSection } from './JournalSection';
 export { CTASection } from './CTASection';
 export { Footer } from './Footer';
 
