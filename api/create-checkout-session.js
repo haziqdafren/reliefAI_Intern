@@ -1,38 +1,36 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-module.exports = async (req, res) => {
+exports.handler = async (event, context) => {
   // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
   }
 
   try {
     const { STRIPE_SECRET_KEY } = process.env;
 
     if (!STRIPE_SECRET_KEY) {
-      return res.status(500).json({ error: 'Stripe configuration missing' });
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Stripe configuration missing' }),
+      };
     }
 
     // Parse request body
-    const { priceId, productName, productType } = req.body;
+    const body = JSON.parse(event.body);
+    const { priceId, productName, productType } = body;
 
     if (!priceId) {
-      return res.status(400).json({ error: 'Price ID is required' });
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Price ID is required' }),
+      };
     }
 
-    // Get the origin from headers or environment variable
-    // Priority: 1) Request origin 2) Referer 3) Environment variable 4) Vercel URL 5) Default
-    let origin = req.headers.origin || req.headers.referer?.replace(/\/$/, '');
-
-    if (!origin) {
-      origin = process.env.NEXT_PUBLIC_SITE_URL ||
-               (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
-               'https://jessieli-dusky.vercel.app';
-    }
-
-    // Create Stripe Checkout Session with automatic shipping calculation
-    // Note: Both shipping options will be shown, but customer selects based on their address
-    // Stripe will display them as options during checkout
+    // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -42,80 +40,33 @@ module.exports = async (req, res) => {
         },
       ],
       mode: 'payment',
-      shipping_address_collection: {
-        allowed_countries: ['AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CV', 'CW', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MK', 'ML', 'MM', 'MN', 'MO', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SZ', 'TA', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VN', 'VU', 'WF', 'WS', 'XK', 'YE', 'YT', 'ZA', 'ZM', 'ZW', 'ZZ'],
-      },
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: {
-              amount: 2000, // $20 HKD in cents
-              currency: 'hkd',
-            },
-            display_name: 'Hong Kong Shipping - $20 HKD',
-            delivery_estimate: {
-              minimum: {
-                unit: 'business_day',
-                value: 3,
-              },
-              maximum: {
-                unit: 'business_day',
-                value: 7,
-              },
-            },
-          },
-        },
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: {
-              amount: 6900, // $69 HKD in cents
-              currency: 'hkd',
-            },
-            display_name: 'International Shipping - $69 HKD',
-            delivery_estimate: {
-              minimum: {
-                unit: 'business_day',
-                value: 7,
-              },
-              maximum: {
-                unit: 'business_day',
-                value: 14,
-              },
-            },
-          },
-        },
-      ],
-      phone_number_collection: {
-        enabled: true,
-      },
-      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/payment-cancel`,
+      success_url: `${event.headers.origin || event.headers.referer}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${event.headers.origin || event.headers.referer}/payment-cancel`,
       metadata: {
         productName: productName || 'Product',
         productType: productType || 'general',
       },
     });
 
-    return res.status(200).json({
-      sessionId: session.id,
-      url: session.url,
-    });
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionId: session.id,
+        url: session.url,
+      }),
+    };
   } catch (error) {
     console.error('Stripe error:', error);
-    console.error('Error details:', {
-      message: error.message,
-      type: error.type,
-      code: error.code,
-      param: error.param,
-    });
-    return res.status(500).json({
-      error: 'Failed to create checkout session',
-      details: error.message,
-      type: error.type,
-      code: error.code,
-    });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Failed to create checkout session',
+        details: error.message,
+      }),
+    };
   }
 };
 

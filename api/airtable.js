@@ -1,9 +1,12 @@
 const Airtable = require('airtable');
 
-module.exports = async (req, res) => {
+exports.handler = async (event, context) => {
   // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
   }
 
   try {
@@ -14,18 +17,25 @@ module.exports = async (req, res) => {
     } = process.env;
 
     if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-      return res.status(500).json({ error: 'Airtable configuration missing' });
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Airtable configuration missing' }),
+      };
     }
 
     // Initialize Airtable
     const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 
     // Parse request body
-    const { inquiryType, firstName, lastName, email, phone, message } = req.body;
+    const body = JSON.parse(event.body);
+    const { inquiryType, firstName, lastName, email, phone, message } = body;
 
     // Validate required fields
     if (!firstName || !lastName || !email || !message) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required fields' }),
+      };
     }
 
     // Create record in Airtable
@@ -43,15 +53,25 @@ module.exports = async (req, res) => {
       },
     ]);
 
-    return res.status(200).json({
-      success: true,
-      recordId: records[0].id,
-    });
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: true,
+        recordId: records[0].id,
+      }),
+    };
   } catch (error) {
     console.error('Airtable error:', error);
-    return res.status(500).json({
-      error: 'Failed to submit inquiry',
-      details: error.message,
-    });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Failed to submit inquiry',
+        details: error.message,
+      }),
+    };
   }
 };
+
