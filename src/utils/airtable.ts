@@ -58,7 +58,7 @@ export const submitNewsletter = async (data: NewsletterData): Promise<{ success:
     if (!response.ok) {
       return {
         success: false,
-        error: result.error || 'Failed to subscribe',
+        error: result.error || 'Failed to subscribe to newsletter',
         alreadySubscribed: result.alreadySubscribed || false,
       };
     }
@@ -67,7 +67,7 @@ export const submitNewsletter = async (data: NewsletterData): Promise<{ success:
       success: true,
     };
   } catch (error) {
-    console.error('Error submitting newsletter:', error);
+    console.error('Error subscribing to newsletter:', error);
     return {
       success: false,
       error: 'Network error. Please try again.',
