@@ -33,7 +33,7 @@ export const BookPage = () => {
             {/* Clean Book Cover Section (embedded real cover) */}
             <div className="text-center lg:text-left">
               <div className="relative inline-block">
-                <img src="/cover.png" alt="Dancing with Wolves Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
+                <img src="/cover-softcover.png" alt="Dancing with Wolves Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
                 {/* Status Badge */}
                 <div className="mt-6 text-center">
                   <div className="inline-flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-corporate font-medium">
