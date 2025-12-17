@@ -140,7 +140,7 @@ import { trackPurchase } from '../utils/analytics';
 useEffect(() => {
   if (sessionId) {
     // Track the purchase
-    trackPurchase(sessionId, 'Homwards Journal', 25, 'USD');
+    trackPurchase(sessionId, 'Homeward Journal', 25, 'USD');
   }
 }, [sessionId]);
 ```

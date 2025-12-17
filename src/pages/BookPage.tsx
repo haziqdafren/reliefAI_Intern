@@ -2,18 +2,13 @@ import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
 import { StripeCheckoutButton } from '../components/StripeCheckoutButton';
-import { useCurrency } from '../contexts/CurrencyContext';
-import { getPriceDisplay } from '../utils/currency';
 
 export const BookPage = () => {
   const heroAnimation = useScrollAnimation();
   const synopsisAnimation = useScrollAnimation();
+  const socialProofAnimation = useScrollAnimation();
   const journalAnimation = useScrollAnimation();
   const { isNewsletterVisible } = useNewsletter();
-  const { currency } = useCurrency();
-
-  // Journal price in USD
-  const JOURNAL_PRICE_USD = 25;
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-white via-primary-50/30 to-primary-100/20 relative transition-all duration-300 ${
@@ -35,10 +30,17 @@ export const BookPage = () => {
           }`}
         >
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Clean Book Cover Section (soft cover design) */}
+            {/* Clean Book Cover Section (embedded real cover) */}
             <div className="text-center lg:text-left">
               <div className="relative inline-block">
-                <img src="/cover-softcover.png" alt="Dancing with Wolves Soft Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
+                <img src="/cover.png" alt="Dancing with Wolves Cover" className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl border-4 border-white" />
+                {/* Status Badge */}
+                <div className="mt-6 text-center">
+                  <div className="inline-flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-corporate font-medium">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    Coming Soon
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -51,6 +53,27 @@ export const BookPage = () => {
                 <p className="text-xl text-primary-500 font-corporate font-light mb-6 tracking-wide leading-relaxed">
                   Engaging Feminine Power to Master Authentic Leadership
                 </p>
+              </div>
+
+              {/* Author & Credibility - consistent styling */}
+              <div className="bg-gradient-to-r from-primary-50 to-primary-100/30 p-6 rounded-2xl border border-primary-200/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-xl font-heading font-medium text-text-primary">By Jessie Li</p>
+                    <p className="text-sm text-text-secondary">Leadership Coach • TEDx Speaker • Fortune 500 Executive</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-heading font-medium text-primary-500">#1</div>
+                    <div className="text-xs text-text-secondary uppercase tracking-wide">Leadership</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-text-secondary">
+                  <span>4.8⭐ Rating</span>
+                  <span>•</span>
+                  <span>50K+ Pre-Orders</span>
+                  <span>•</span>
+                  <span>Harvard Review Featured</span>
+                </div>
               </div>
 
               {/* CTA Buttons - consistent with site */}
@@ -133,8 +156,8 @@ export const BookPage = () => {
           </div>
         </div>
 
-        {/* Testimonials - HIDDEN per client request */}
-        {/* <div
+        {/* Testimonials - Consistent with site design */}
+        <div
           ref={socialProofAnimation.ref}
           className={`py-16 transition-all duration-700 delay-300 ${
             socialProofAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -159,7 +182,7 @@ export const BookPage = () => {
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* JOURNAL SECTION */}
         <div
@@ -177,20 +200,20 @@ export const BookPage = () => {
                   Guided Journey
                 </div>
                 <h3 className="font-heading text-4xl md:text-5xl font-semibold text-text-primary leading-tight mb-4">
-                  Homwards: to my authentic self
+                  Homeward: to my authentic self
                 </h3>
                 <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-lg mb-6">
-                  Homeward: To My Authentic Self is a guided daily and weekly journal designed to help you build self-awareness, challenge old patterns, and mindfully create new habits that support your goals and purpose. With thoughtful prompts and insightful reflection exercises, this journal empowers you to look deeper, move beyond old patterns, and thrive in your most authentic self.
+                  Turn inward and reconnect with your authentic self. Build self-awareness through the BALANCE framework, cultivate gratitude, reflect on your purpose, and create headspace to stay centered on your north star. A safe space for your growth and self-discovery.
                 </p>
                 <div className="flex items-center gap-4 mb-4">
                   <StripeCheckoutButton
                     priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
-                    productName="Homwards: to my authentic self - Journal"
+                    productName="Homeward: to my authentic self - Journal"
                     productType="journal"
                     className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
                     disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
                   >
-                    Buy Now — {getPriceDisplay(JOURNAL_PRICE_USD, currency)}
+                    Buy Now — USD 25
                   </StripeCheckoutButton>
                 </div>
                 {/* Shipping note removed per request */}
@@ -198,7 +221,7 @@ export const BookPage = () => {
 
               {/* RIGHT: Journal Image */}
               <div className="flex justify-center lg:justify-end">
-                <img src="/journal.png" alt="Homwards Journal Cover" className="w-80 md:w-96 h-96 md:h-[28rem] object-cover rounded-2xl shadow-2xl border-4 border-white" />
+                <img src="/journal.png" alt="Homeward Journal Cover" className="w-80 md:w-96 h-96 md:h-[28rem] object-cover rounded-2xl shadow-2xl border-4 border-white" />
               </div>
             </div>
           </div>

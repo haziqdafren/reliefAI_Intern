@@ -18,8 +18,6 @@ This project integrates **Airtable** for inquiry management and **Stripe** for p
    - `Date` (Date & time) - Auto-filled
 4. Create a table called **"Payments"** with the following fields:
    - `Customer Email` (Email)
-   - `Customer Name` (Single line text)
-   - `Phone` (Phone number)
    - `Amount` (Number)
    - `Currency` (Single line text)
    - `Payment Status` (Single line text)
@@ -27,22 +25,11 @@ This project integrates **Airtable** for inquiry management and **Stripe** for p
    - `Product Name` (Single line text)
    - `Product Type` (Single line text)
    - `Date` (Date & time)
-   - `Address Line 1` (Single line text)
-   - `Address Line 2` (Single line text)
-   - `City` (Single line text)
-   - `State` (Single line text)
-   - `Postal Code` (Single line text)
-   - `Country` (Single line text)
-5. Create a table called **"Newsletter"** with the following fields:
-   - `Email` (Email)
-   - `Subscribed Date` (Date & time)
-   - `Status` (Single select: Active, Unsubscribed)
-   - `Source` (Single line text)
-6. Get your **API Key**:
+5. Get your **API Key**:
    - Go to [Airtable Account](https://airtable.com/account)
    - Scroll to "API" section
    - Click "Generate API key"
-7. Get your **Base ID**:
+6. Get your **Base ID**:
    - Go to your base
    - Click "Help" → "API documentation"
    - Copy the Base ID (starts with `app...`)
@@ -55,12 +42,12 @@ This project integrates **Airtable** for inquiry management and **Stripe** for p
    - Copy **Secret key** (starts with `sk_`)
 3. Create **Products & Prices** in Stripe:
    - Go to Products → Add Product
-   - For **Journal**: Create product "Homwards Journal" with price $25 USD
+   - For **Journal**: Create product "Homeward Journal" with price $25 USD
    - Copy the **Price ID** (starts with `price_`)
 4. Set up **Webhook**:
    - Go to Developers → Webhooks
    - Click "Add endpoint"
-   - Endpoint URL: `https://www.jessieli.co/api/stripe-webhook`
+   - Endpoint URL: `https://your-domain.com/api/stripe-webhook`
    - Select events: `checkout.session.completed`
    - Copy the **Webhook signing secret** (starts with `whsec_`)
 
@@ -74,7 +61,6 @@ AIRTABLE_API_KEY=your_airtable_api_key
 AIRTABLE_BASE_ID=your_base_id
 AIRTABLE_INQUIRIES_TABLE=Inquiries
 AIRTABLE_PAYMENTS_TABLE=Payments
-AIRTABLE_NEWSLETTER_TABLE=Newsletter
 
 STRIPE_SECRET_KEY=sk_test_... (or sk_live_... for production)
 REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_... (or pk_live_... for production)
@@ -92,7 +78,6 @@ AIRTABLE_API_KEY=your_key_here
 AIRTABLE_BASE_ID=your_base_id_here
 AIRTABLE_INQUIRIES_TABLE=Inquiries
 AIRTABLE_PAYMENTS_TABLE=Payments
-AIRTABLE_NEWSLETTER_TABLE=Newsletter
 
 STRIPE_SECRET_KEY=sk_test_your_key
 REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_your_key

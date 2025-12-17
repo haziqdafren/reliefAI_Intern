@@ -116,7 +116,7 @@ Your order has been confirmed! We're excited to send your journal to you.
 ORDER DETAILS
 ─────────────────────────────────
 Order Reference: cs_test_xxxxx
-Product: Homwards: to my authentic self - Journal
+Product: Homeward: to my authentic self - Journal
 Subtotal: 120.00 HKD
 Shipping Fee: 20.00 HKD
 ─────────────────────────────────

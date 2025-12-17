@@ -39,7 +39,7 @@ export const JournalSection = () => {
             <Link to="/guidedjournal" className="block aspect-[3/4] max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2 cursor-pointer">
               <img
                 src="/journal.png"
-                alt="Homwards: to my authentic self - Guided Journal"
+                alt="Homeward: to my authentic self - Guided Journal"
                 className="w-full h-full object-cover"
               />
             </Link>
@@ -49,7 +49,7 @@ export const JournalSection = () => {
           <div className="text-center lg:text-left">
             <Link to="/guidedjournal">
               <h3 className="font-heading text-3xl md:text-4xl text-text-primary font-medium mb-4 hover:text-primary-500 transition-colors duration-300 cursor-pointer">
-                Homwards: to my authentic self
+                Homeward: to my authentic self
               </h3>
             </Link>
             <p className="text-primary-400 italic font-corporate text-lg mb-6">
@@ -60,7 +60,7 @@ export const JournalSection = () => {
             </p>
             <StripeCheckoutButton
               priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
-              productName="Homwards: to my authentic self - Journal"
+              productName="Homeward: to my authentic self - Journal"
               productType="journal"
               className="inline-block bg-gradient-to-r from-primary-400 to-primary-500 text-white py-4 px-12 rounded-full text-lg md:text-xl font-corporate font-bold transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-400/50 shadow-xl shadow-primary-400/40 uppercase tracking-wider"
               disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}

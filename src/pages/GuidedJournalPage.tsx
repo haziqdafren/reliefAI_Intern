@@ -39,7 +39,7 @@ export const GuidedJournalPage = () => {
               <div className="relative inline-block">
                 <img
                   src="/journal.png"
-                  alt="Homwards: to my authentic self - Guided Journal"
+                  alt="Homeward: to my authentic self - Guided Journal"
                   className="w-56 sm:w-64 md:w-72 h-72 sm:h-80 md:h-96 object-cover rounded-xl sm:rounded-2xl shadow-2xl border-4 border-white transition-all duration-500 hover:-translate-y-2"
                 />
               </div>
@@ -49,7 +49,7 @@ export const GuidedJournalPage = () => {
             <div className="text-center lg:text-left space-y-4 sm:space-y-5 md:space-y-6">
               <div>
                 <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-2 sm:mb-3 leading-tight tracking-tight">
-                  Homwards: to my authentic self
+                  Homeward: to my authentic self
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl text-primary-500 font-corporate font-light mb-3 sm:mb-4 tracking-wide leading-relaxed italic">
                   Guided Inward: A Journal For Self-Discovery
@@ -60,7 +60,7 @@ export const GuidedJournalPage = () => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                 <StripeCheckoutButton
                   priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
-                  productName="Homwards: to my authentic self - Journal"
+                  productName="Homeward: to my authentic self - Journal"
                   productType="journal"
                   className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-6 sm:px-8 rounded-full text-sm sm:text-base font-corporate font-medium transition-all duration-300 hover:shadow-xl hover:-translate-y-1 shadow-lg shadow-primary-400/30"
                   disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}

@@ -114,7 +114,7 @@ git push origin main
    - ✅ Pink gradient header with "Thank You for Your Order!"
    - ✅ Your name appears correctly
    - ✅ Order reference (Stripe session ID)
-   - ✅ Product: Homwards journal
+   - ✅ Product: Homeward journal
    - ✅ Subtotal, shipping fee, total amount
    - ✅ Your shipping address
    - ✅ Your phone number

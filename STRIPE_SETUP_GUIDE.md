@@ -27,7 +27,7 @@ The website is ready to accept payments. We just need **4 credentials** from you
 1. Click **"Products"** (left sidebar)
 2. Click **"+ Add product"**
 3. Enter:
-   - Name: **Homwards: to my authentic self - Journal**
+   - Name: **Homeward: to my authentic self - Journal**
    - Price: **$25.00 USD**
    - Select **"One time"** payment
 4. Click **"Save product"**

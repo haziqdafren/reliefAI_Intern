@@ -2,8 +2,6 @@ import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useNewsletter } from '../contexts/NewsletterContext';
 import { StripeCheckoutButton } from '../components/StripeCheckoutButton';
-import { useCurrency } from '../contexts/CurrencyContext';
-import { getPriceDisplay } from '../utils/currency';
 
 export const JournalPage = () => {
   const heroAnimation = useScrollAnimation();
@@ -11,10 +9,6 @@ export const JournalPage = () => {
   const frameworkAnimation = useScrollAnimation();
   const ctaAnimation = useScrollAnimation();
   const { isNewsletterVisible } = useNewsletter();
-  const { currency } = useCurrency();
-
-  // Journal price in USD
-  const JOURNAL_PRICE_USD = 25;
 
   const journalFeatures = [
     "Daily self-reflection prompts aligned with BALANCE framework",
@@ -87,7 +81,7 @@ export const JournalPage = () => {
           </div>
 
           <h1 className="font-heading text-6xl md:text-8xl font-medium text-text-primary mb-3 leading-tight">
-            Homwards: to my authentic self
+            Homeward: to my authentic self
           </h1>
           <p className="text-primary-400 italic font-corporate text-base md:text-lg mb-3">Guided Inward: A Journal For Self-Discovery</p>
 
@@ -102,12 +96,12 @@ export const JournalPage = () => {
           <div className="flex justify-center">
             <StripeCheckoutButton
               priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
-              productName="Homwards: to my authentic self - Journal"
+              productName="Homeward: to my authentic self - Journal"
               productType="journal"
               className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
               disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}
             >
-              Buy Now — {getPriceDisplay(JOURNAL_PRICE_USD, currency)}
+              Buy Now — USD 25
             </StripeCheckoutButton>
           </div>
         </div>
@@ -194,7 +188,7 @@ export const JournalPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <StripeCheckoutButton
                 priceId={process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID || ''}
-                productName="Homwards: to my authentic self - Journal"
+                productName="Homeward: to my authentic self - Journal"
                 productType="journal"
                 className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
                 disabled={!process.env.REACT_APP_STRIPE_JOURNAL_PRICE_ID}

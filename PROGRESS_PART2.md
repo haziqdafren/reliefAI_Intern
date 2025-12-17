@@ -321,7 +321,7 @@ src/components/
 
 **With**: Journal Section
 - Title: "Reconnect with your authentic self"
-- Product: "Homwards: to my authentic self"
+- Product: "Homeward: to my authentic self"
 - Subtitle: "Guided Inward: A Journal For Self-Discovery"
 - Image: `/journal.png`
 - CTA: "Buy It Now" → links to `/journal`
@@ -388,7 +388,7 @@ src/components/
 
 #### Integration Points
 - Journal page: "Buy Now — USD 25" button
-- Configured for "Homwards: to my authentic self - Journal"
+- Configured for "Homeward: to my authentic self - Journal"
 - Success page: `/payment-success?session_id={CHECKOUT_SESSION_ID}`
 - Cancel page: `/payment-cancel`
 

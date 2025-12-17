@@ -173,7 +173,7 @@ module.exports = async (req, res) => {
               </div>
               <div class="info-row">
                 <span class="label">Product:</span>
-                <span class="value">${productName || 'Homwards: to my authentic self - Journal'}</span>
+                <span class="value">${productName || 'Homeward: to my authentic self - Journal'}</span>
               </div>
             </div>
 
