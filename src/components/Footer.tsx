@@ -26,8 +26,8 @@ export const Footer = () => {
 
           {/* RIGHT SIDE - Navigation and Social */}
           <div className="md:col-span-7 flex flex-col justify-between h-full">
-            {/* Navigation Links - Single column since many items are hidden */}
-            <div className="flex justify-end pr-8">
+            {/* Navigation Links - Two columns */}
+            <div className="flex justify-end pr-8 gap-12">
               <div className="text-left">
                 <a href="/about" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">About</a>
                 <a href="/book" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Book</a>
@@ -43,6 +43,10 @@ export const Footer = () => {
                 >
                   Login
                 </button> */}
+              </div>
+              <div className="text-left">
+                <a href="/values" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Core Values</a>
+                <a href="/balance-framework" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed">BALANCE Framework</a>
               </div>
             </div>
 

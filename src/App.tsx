@@ -17,7 +17,11 @@ import {
   PaymentSuccessPage,
   PaymentCancelPage,
   ShipNotificationPage,
-  NotFoundPage
+  NotFoundPage,
+  ValuesPage,
+  BalanceFrameworkPage,
+  BalanceFrameworkPage_Timeline,
+  BalanceFrameworkPage_Staircase
 } from './pages';
 
 // Wrapper component for analytics tracking
@@ -35,6 +39,10 @@ const AppContent = () => {
         <Route path="/book" element={<BookPage />} />
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/guidedjournal" element={<GuidedJournalPage />} />
+        <Route path="/values" element={<ValuesPage />} />
+        <Route path="/balance-framework" element={<BalanceFrameworkPage />} />
+        <Route path="/balance-timeline" element={<BalanceFrameworkPage_Timeline />} />
+        <Route path="/balance-staircase" element={<BalanceFrameworkPage_Staircase />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/connect" element={<ConnectPage />} />
         <Route path="/speaker-kit" element={<SpeakerKitPage />} />
