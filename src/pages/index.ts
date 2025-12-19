@@ -13,5 +13,3 @@ export { ShipNotificationPage } from './ShipNotificationPage';
 export { NotFoundPage } from './NotFoundPage';
 export { ValuesPage } from './ValuesPage';
 export { BalanceFrameworkPage } from './BalanceFrameworkPage';
-export { BalanceFrameworkPage_Timeline } from './BalanceFrameworkPage_Timeline';
-export { BalanceFrameworkPage_Staircase } from './BalanceFrameworkPage_Staircase';
