@@ -286,9 +286,9 @@ module.exports = async (req, res) => {
                       <h2 style="color: #D88A75; margin-top: 0;">Shipping Address</h2>
                       <p style="margin: 0; line-height: 1.8;">
                         <strong>${customerName}</strong><br>
-                        ${shippingAddress.line1 || ''}<br>
+                        ${shippingAddress.line1 ? shippingAddress.line1 + '<br>' : ''}
                         ${shippingAddress.line2 ? shippingAddress.line2 + '<br>' : ''}
-                        ${shippingAddress.city || ''}, ${shippingAddress.state || ''} ${shippingAddress.postal_code || ''}<br>
+                        ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code].filter(Boolean).join(', ')}${shippingAddress.city || shippingAddress.state || shippingAddress.postal_code ? '<br>' : ''}
                         ${getCountryName(shippingAddress.country) || ''}
                       </p>
                     </div>
