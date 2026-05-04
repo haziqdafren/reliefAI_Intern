@@ -107,7 +107,7 @@ export const NewsletterBanner = () => {
         <div className="bg-text-primary text-white py-2 px-4 z-[60] fixed top-0 left-0 right-0 border-b border-primary-200/20">
           <div className="container mx-auto flex items-center justify-center max-w-6xl">
             {/* Simplified newsletter content */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap justify-center">
               <span className="font-corporate text-sm">
                 Get weekly leadership insights
               </span>
@@ -122,8 +122,8 @@ export const NewsletterBanner = () => {
                       onChange={handleEmailChange}
                       placeholder="your@email.com"
                       className={`bg-white/10 text-white px-3 py-1 rounded text-sm font-corporate placeholder:text-white/60 focus:outline-none transition-colors w-40 border ${
-                        emailError 
-                          ? 'border-red-400 focus:bg-red-500/20' 
+                        emailError
+                          ? 'border-red-400 focus:bg-red-500/20'
                           : 'border-white/20 focus:bg-white/20'
                       }`}
                       disabled={isSubmitting}
@@ -139,6 +139,22 @@ export const NewsletterBanner = () => {
                   </button>
                 </form>
               </div>
+
+              {/* Divider */}
+              <span className="text-white/30 text-sm hidden sm:inline">|</span>
+
+              {/* Substack subscribe link */}
+              <a
+                href="https://leadwithbalance.substack.com/?utm_source=website-banner"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 bg-[#FF6719]/20 hover:bg-[#FF6719]/40 text-white px-3 py-1 rounded text-sm font-corporate transition-colors border border-[#FF6719]/40 hover:border-[#FF6719]/70"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+                </svg>
+                Subscribe on Substack
+              </a>
             </div>
 
             {/* Minimal close button */}
