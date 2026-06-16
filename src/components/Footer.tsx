@@ -12,7 +12,7 @@ export const Footer = () => {
           <div className="md:col-span-5 space-y-8">
             <div>
               <h2 className="font-heading text-4xl md:text-5xl font-medium text-text-primary leading-tight mb-4">
-                Your feminine essence is your <span className="underline decoration-primary-400 decoration-2 underline-offset-4">leadership superpower</span>.
+                Real leadership begins where <span className="underline decoration-primary-400 decoration-2 underline-offset-4">performance ends</span>.
               </h2>
             </div>
 
