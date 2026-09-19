@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 
 export const useScrollAnimation = (threshold = 0.1) => {
-  const [isVisible, setIsVisible] = useState(false);
+  // Start visible where IntersectionObserver is unavailable, so content is
+  // never left permanently hidden behind an animation that cannot run.
+  const [isVisible, setIsVisible] = useState(
+    typeof IntersectionObserver === 'undefined'
+  );
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

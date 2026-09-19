@@ -13,6 +13,7 @@ export const HeroSection = OriginalHeroSection;
 export { AboutSection } from './AboutSection';
 export { StatsSection } from './StatsSection';
 export { JournalSection } from './JournalSection';
+export { PodcastSection } from './PodcastSection';
 export { BalanceSection } from './BalanceSection';
 export { BookSection } from './BookSection';
 export { CoachingSection } from './CoachingSection';

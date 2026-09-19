@@ -12,6 +12,7 @@ import {
   AboutPage,
   ConnectPage,
   JournalPage,
+  PodcastPage,
   GuidedJournalPage,
   SpeakerKitPage,
   PaymentSuccessPage,
@@ -28,14 +29,22 @@ const AppContent = () => {
 
   return (
     <div className="App font-corporate bg-primary-100 text-text-primary overflow-x-hidden">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:text-text-primary focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-text-primary"
+      >
+        Skip to main content
+      </a>
       <NewsletterBanner />
       <Header />
+      <main id="main-content">
       <Routes>
         <Route path="/" element={<HomePage />} />
         {/* <Route path="/coaching" element={<CoachingPage />} /> */} {/* Hidden - uncomment to show coaching page */}
         {/* <Route path="/course" element={<CoursePage />} /> */} {/* Hidden - uncomment to show course page */}
         <Route path="/book" element={<BookPage />} />
         <Route path="/journal" element={<JournalPage />} />
+        <Route path="/podcast" element={<PodcastPage />} />
         <Route path="/guidedjournal" element={<GuidedJournalPage />} />
         <Route path="/values" element={<ValuesPage />} />
         <Route path="/balance-framework" element={<BalanceFrameworkPage />} />
@@ -47,6 +56,7 @@ const AppContent = () => {
         <Route path="/ship-notification" element={<ShipNotificationPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </main>
       <Footer />
     </div>
   );
