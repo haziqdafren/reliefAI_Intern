@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { EpisodeThumbnail } from './podcast/EpisodeThumbnail';
@@ -15,13 +15,17 @@ const FEATURED_COUNT = 3;
  * full podcast page.
  */
 export const PodcastSection = () => {
+  const headingId = useId();
   const headerAnimation = useScrollAnimation();
   const gridAnimation = useScrollAnimation();
 
   const featured = PODCAST_EPISODES.slice(0, FEATURED_COUNT);
 
+  // Nothing to tease yet — the section would render an empty grid.
+  if (featured.length === 0) return null;
+
   return (
-    <section className="py-20 sm:py-24 bg-[#F7F4EF]" id="podcast">
+    <section aria-labelledby={headingId} className="py-20 sm:py-24 bg-[#F7F4EF]" id="podcast">
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div
           ref={headerAnimation.ref}
@@ -32,7 +36,7 @@ export const PodcastSection = () => {
           <p className="font-corporate text-xs uppercase tracking-widest text-text-secondary mb-4">
             The Podcast
           </p>
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-medium text-text-primary mb-4 leading-tight">
+          <h2 id={headingId} className="font-heading text-3xl sm:text-4xl md:text-5xl font-medium text-text-primary mb-4 leading-tight">
             {PODCAST_TITLE}
           </h2>
           <p className="font-corporate text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
@@ -63,7 +67,7 @@ export const PodcastSection = () => {
           <div className="text-center mt-12">
             <Link
               to="/podcast"
-              className="inline-block bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium uppercase tracking-wider transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30"
+              className="inline-flex items-center justify-center min-h-[44px] bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium uppercase tracking-wider transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
             >
               See all episodes
             </Link>

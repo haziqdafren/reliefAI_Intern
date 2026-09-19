@@ -40,9 +40,9 @@ export const PodcastPage = () => {
           <div className="mt-10">
             <a
               href="#suggest-a-guest"
-              className="inline-flex items-center gap-2 font-corporate text-sm text-text-primary border-b border-text-primary/40 pb-0.5 transition-colors duration-300 hover:text-primary-500 hover:border-primary-400"
+              className="inline-flex items-center gap-2 min-h-[44px] font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded-sm"
             >
-              Suggest a future guest
+              <span className="border-b border-text-primary/70 pb-0.5">Suggest a future guest</span>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>

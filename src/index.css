@@ -21,3 +21,16 @@
 html, body, #root {
   overflow-x: hidden;
 }
+
+/* Respect the OS "reduce motion" setting. Scroll reveals still resolve to
+   visible because the observer toggles the class rather than the duration. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

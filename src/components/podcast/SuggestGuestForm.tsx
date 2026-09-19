@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { SuccessModal } from '../ui/SuccessModal';
 import { submitGuestSuggestion } from '../../utils/airtable';
+
+/** Matches the per-field caps enforced by /api/guest-suggestion. */
+const MAX_LENGTHS = {
+  firstName: 100,
+  lastName: 100,
+  email: 254,
+  guestName: 200,
+  topics: 500,
+  value: 5000,
+  links: 2000,
+  notes: 5000,
+} as const;
 
 const LISTENER_OPTIONS = [
   "I'm a regular listener",
@@ -23,7 +35,7 @@ const INITIAL_FORM = {
 };
 
 const validateEmail = (email: string) => {
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   return emailRegex.test(email);
 };
 
@@ -38,6 +50,19 @@ const labelClasses =
   'block text-text-primary font-medium mb-2 text-xs uppercase tracking-wider';
 
 /**
+ * Accessibility attributes shared by every field: programmatic required state,
+ * invalid state, and the link to its error message.
+ */
+const a11yProps = (name: string, errors: { [key: string]: string }, required = false) => ({
+  name,
+  id: `sg-${name}`,
+  required,
+  'aria-required': required || undefined,
+  'aria-invalid': errors[name] ? (true as const) : undefined,
+  'aria-describedby': errors[name] ? `sg-${name}-error` : undefined,
+});
+
+/**
  * "Suggest a future guest" form. Submits to /api/guest-suggestion, which
  * writes to a dedicated Airtable table.
  */
@@ -46,6 +71,21 @@ export const SuggestGuestForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  /** Bot trap: hidden from real users, so any value means an automated submit. */
+  const [honeypot, setHoneypot] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+  /** Restores focus to the submit button when the success modal closes. */
+  const submitRef = useRef<HTMLButtonElement>(null);
+
+  /** Move focus to the first field that failed, so the user lands on the problem. */
+  const focusFirstError = (found: { [key: string]: string }) => {
+    const order = ['firstName', 'lastName', 'email', 'guestName', 'topics', 'value'];
+    const first = order.find((name) => found[name]);
+    if (!first || !formRef.current) return;
+    const field = formRef.current.querySelector<HTMLElement>(`[name="${first}"]`);
+    field?.focus();
+    field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -76,12 +116,13 @@ export const SuggestGuestForm = () => {
     const found = validate();
     if (Object.keys(found).length > 0) {
       setErrors(found);
+      focusFirstError(found);
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const result = await submitGuestSuggestion(formData);
+      const result = await submitGuestSuggestion({ ...formData, website: honeypot });
       if (result.success) {
         setShowSuccess(true);
         setFormData(INITIAL_FORM);
@@ -97,35 +138,52 @@ export const SuggestGuestForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-3xl">
+      <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6 max-w-3xl">
+        <p className="font-corporate text-sm text-text-secondary">
+          Fields marked * are required.
+        </p>
+
+        {/* Honeypot: hidden from people, visible to bots. */}
+        <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
+          <label htmlFor="sg-website">Website (leave blank)</label>
+          <input
+            id="sg-website"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
+        </div>
         {/* Name */}
         <div className="grid sm:grid-cols-2 gap-6">
           <div>
             <label htmlFor="sg-firstName" className={labelClasses}>First name *</label>
             <div className="relative">
               <input
-                id="sg-firstName"
+                {...a11yProps('firstName', errors, true)}
+                maxLength={MAX_LENGTHS.firstName}
                 type="text"
-                name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
                 className={fieldClasses(Boolean(errors.firstName))}
               />
-              {errors.firstName && <ErrorMessage message={errors.firstName} />}
+              {errors.firstName && <ErrorMessage id={`sg-firstName-error`} message={errors.firstName} />}
             </div>
           </div>
           <div>
             <label htmlFor="sg-lastName" className={labelClasses}>Last name *</label>
             <div className="relative">
               <input
-                id="sg-lastName"
+                {...a11yProps('lastName', errors, true)}
+                maxLength={MAX_LENGTHS.lastName}
                 type="text"
-                name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
                 className={fieldClasses(Boolean(errors.lastName))}
               />
-              {errors.lastName && <ErrorMessage message={errors.lastName} />}
+              {errors.lastName && <ErrorMessage id={`sg-lastName-error`} message={errors.lastName} />}
             </div>
           </div>
         </div>
@@ -135,14 +193,14 @@ export const SuggestGuestForm = () => {
           <label htmlFor="sg-email" className={labelClasses}>Your email *</label>
           <div className="relative">
             <input
-              id="sg-email"
+              {...a11yProps('email', errors, true)}
+              maxLength={MAX_LENGTHS.email}
               type="email"
-              name="email"
               value={formData.email}
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.email))}
             />
-            {errors.email && <ErrorMessage message={errors.email} />}
+            {errors.email && <ErrorMessage id={`sg-email-error`} message={errors.email} />}
           </div>
         </div>
 
@@ -156,7 +214,7 @@ export const SuggestGuestForm = () => {
             name="listenerRelationship"
             value={formData.listenerRelationship}
             onChange={handleChange}
-            className={`${fieldClasses(false)} appearance-none`}
+            className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
           >
             {LISTENER_OPTIONS.map((option) => (
               <option key={option}>{option}</option>
@@ -171,14 +229,14 @@ export const SuggestGuestForm = () => {
           </label>
           <div className="relative">
             <input
-              id="sg-guestName"
+              {...a11yProps('guestName', errors, true)}
+              maxLength={MAX_LENGTHS.guestName}
               type="text"
-              name="guestName"
               value={formData.guestName}
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.guestName))}
             />
-            {errors.guestName && <ErrorMessage message={errors.guestName} />}
+            {errors.guestName && <ErrorMessage id={`sg-guestName-error`} message={errors.guestName} />}
           </div>
         </div>
 
@@ -191,7 +249,7 @@ export const SuggestGuestForm = () => {
             name="isRepresentative"
             value={formData.isRepresentative}
             onChange={handleChange}
-            className={`${fieldClasses(false)} appearance-none`}
+            className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
           >
             <option>No</option>
             <option>Yes</option>
@@ -204,14 +262,14 @@ export const SuggestGuestForm = () => {
           </label>
           <div className="relative">
             <input
-              id="sg-topics"
+              {...a11yProps('topics', errors, true)}
+              maxLength={MAX_LENGTHS.topics}
               type="text"
-              name="topics"
               value={formData.topics}
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.topics))}
             />
-            {errors.topics && <ErrorMessage message={errors.topics} />}
+            {errors.topics && <ErrorMessage id={`sg-topics-error`} message={errors.topics} />}
           </div>
         </div>
 
@@ -221,14 +279,14 @@ export const SuggestGuestForm = () => {
           </label>
           <div className="relative">
             <textarea
-              id="sg-value"
-              name="value"
+              {...a11yProps('value', errors, true)}
+              maxLength={MAX_LENGTHS.value}
               value={formData.value}
               onChange={handleChange}
               rows={4}
               className={`${fieldClasses(Boolean(errors.value))} resize-none`}
             />
-            {errors.value && <ErrorMessage message={errors.value} />}
+            {errors.value && <ErrorMessage id={`sg-value-error`} message={errors.value} />}
           </div>
         </div>
 
@@ -237,8 +295,8 @@ export const SuggestGuestForm = () => {
             Helpful links (articles, videos, books, website)
           </label>
           <textarea
-            id="sg-links"
-            name="links"
+            {...a11yProps('links', errors)}
+            maxLength={MAX_LENGTHS.links}
             value={formData.links}
             onChange={handleChange}
             rows={3}
@@ -251,8 +309,8 @@ export const SuggestGuestForm = () => {
             Anything else worth knowing?
           </label>
           <textarea
-            id="sg-notes"
-            name="notes"
+            {...a11yProps('notes', errors)}
+            maxLength={MAX_LENGTHS.notes}
             value={formData.notes}
             onChange={handleChange}
             rows={3}
@@ -268,6 +326,7 @@ export const SuggestGuestForm = () => {
 
         <div>
           <button
+            ref={submitRef}
             type="submit"
             disabled={isSubmitting}
             className="bg-gradient-to-r from-primary-400 to-primary-500 text-white py-4 px-12 rounded-full font-corporate font-medium text-sm uppercase tracking-wider transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
@@ -279,7 +338,10 @@ export const SuggestGuestForm = () => {
 
       <SuccessModal
         isOpen={showSuccess}
-        onClose={() => setShowSuccess(false)}
+        onClose={() => {
+          setShowSuccess(false);
+          submitRef.current?.focus();
+        }}
         title="Thank You!"
         message="Thanks for your suggestion. Every one is read, though I'm not always able to reply personally."
       />

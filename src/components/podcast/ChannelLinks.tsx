@@ -13,9 +13,10 @@ export const ChannelLinks = () => (
           href={channel.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-5 sm:px-7 py-3 border border-text-primary/25 rounded-full font-corporate text-xs sm:text-sm font-medium uppercase tracking-wider text-text-primary transition-all duration-300 hover:border-primary-400 hover:text-primary-500 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+          className="inline-flex items-center justify-center min-h-[44px] px-5 sm:px-7 py-3 border border-text-primary/60 rounded-full font-corporate text-xs sm:text-sm font-medium uppercase tracking-wider text-text-primary transition-all duration-300 hover:border-primary-500 hover:text-primary-500 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
         >
-          {channel.label}
+          <span aria-hidden="true">{channel.label}</span>
+          <span className="sr-only">{`Listen on ${channel.label} (opens in a new tab)`}</span>
         </a>
       </li>
     ))}

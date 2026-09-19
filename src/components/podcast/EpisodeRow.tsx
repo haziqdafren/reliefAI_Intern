@@ -27,9 +27,10 @@ const youtubeWatchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const panelId = useId();
+  const titleId = useId();
 
   return (
-    <article className="py-8 sm:py-10 border-b border-primary-300">
+    <article aria-labelledby={titleId} className="py-8 sm:py-10 border-b border-primary-300">
       <div className="flex flex-col md:flex-row md:items-start gap-5 sm:gap-6 md:gap-8">
         {/* Thumbnail — fixed share of the row on wider screens */}
         <div className="w-full md:w-64 lg:w-72 md:flex-shrink-0">
@@ -49,7 +50,7 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
             EP {String(episode.number).padStart(2, '0')}
           </p>
 
-          <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl font-medium text-text-primary leading-snug mb-3">
+          <h3 id={titleId} className="font-heading text-xl sm:text-2xl lg:text-3xl font-medium text-text-primary leading-snug mb-3">
             {episode.title}
           </h3>
 
@@ -59,9 +60,9 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
               onClick={() => setIsExpanded((open) => !open)}
               aria-expanded={isExpanded}
               aria-controls={panelId}
-              className="inline-flex items-center gap-1.5 font-corporate text-sm text-text-primary border-b border-text-primary/40 pb-0.5 transition-colors duration-300 hover:text-primary-500 hover:border-primary-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 rounded-sm"
+              className="inline-flex items-center gap-1.5 min-h-[44px] -my-2 font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded-sm"
             >
-              {isExpanded ? 'Read less' : 'Read more'}
+              <span className="border-b border-text-primary/70 pb-0.5">{isExpanded ? 'Read less' : 'Read more'}</span>
               <svg
                 className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
                 fill="none"
@@ -82,10 +83,15 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
           </div>
 
           {/* Expanded detail */}
+          {/* `hidden` keeps the panel out of the a11y tree when collapsed.
+              Opacity is state-driven so the fade runs on every toggle, not
+              just the first mount. */}
           <div
             id={panelId}
             hidden={!isExpanded}
-            className="mt-5 max-w-2xl animate-fade-in"
+            className={`mt-5 max-w-2xl transition-opacity duration-300 ${
+              isExpanded ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             <p className="font-corporate text-base text-text-secondary leading-relaxed">
               {episode.description}
@@ -93,26 +99,26 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
 
             {episode.resources && episode.resources.length > 0 && (
               <div className="mt-6">
-                <h4 className="font-corporate text-xs uppercase tracking-widest text-text-secondary mb-3">
+                <p className="font-corporate text-xs uppercase tracking-widest text-text-secondary mb-3">
                   Episode resources
-                </h4>
-                <ul className="space-y-2 list-none">
+                </p>
+                <ul className="space-y-1 list-none">
                   {episode.resources.map((resource) => (
                     <li key={resource.label}>
                       <a
                         href={resource.url}
-                        download
-                        className="inline-flex items-center gap-2 font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 rounded-sm"
+                        {...(resource.url && resource.url !== '#' ? { download: true } : {})}
+                        className="inline-flex items-center gap-2 min-h-[44px] font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded-sm"
                       >
                         <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span className="underline decoration-primary-300 underline-offset-4">
+                        <span className="underline decoration-text-primary/60 underline-offset-4">
                           {resource.label}
                         </span>
-                        {resource.meta && (
-                          <span className="text-text-secondary text-xs">({resource.meta})</span>
-                        )}
+                        <span className="text-text-secondary text-xs">
+                          ({resource.meta ?? 'download'})
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -129,9 +135,10 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
               href={youtubeWatchUrl(episode.youtubeId)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-corporate text-sm font-medium uppercase tracking-wider text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 rounded-sm"
+              className="inline-flex items-center gap-2 min-h-[44px] font-corporate text-sm font-medium uppercase tracking-wider text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded-sm"
             >
-              Watch
+              <span aria-hidden="true">Watch</span>
+              <span className="sr-only">{`Watch "${episode.title}" on YouTube (opens in a new tab)`}</span>
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M8 5v14l11-7z" />
               </svg>

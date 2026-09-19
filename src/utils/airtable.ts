@@ -23,6 +23,8 @@ export interface GuestSuggestionData {
   value: string;
   links?: string;
   notes?: string;
+  /** Honeypot. Always empty for real people; a value marks the submit as a bot. */
+  website?: string;
 }
 
 export const submitToAirtable = async (data: InquiryData): Promise<{ success: boolean; error?: string }> => {
@@ -66,13 +68,17 @@ export const submitGuestSuggestion = async (data: GuestSuggestionData): Promise<
       body: JSON.stringify(data),
     });
 
-    const result = await response.json();
-
     if (!response.ok) {
-      return {
-        success: false,
-        error: result.error || 'Failed to submit suggestion',
-      };
+      // A platform-level failure (502/504) can return HTML rather than JSON,
+      // so parsing is best-effort.
+      let message = 'Failed to submit suggestion. Please try again later.';
+      try {
+        const result = await response.json();
+        if (result?.error) message = result.error;
+      } catch {
+        /* non-JSON error body — keep the generic message */
+      }
+      return { success: false, error: message };
     }
 
     return {

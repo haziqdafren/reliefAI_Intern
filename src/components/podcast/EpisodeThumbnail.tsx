@@ -23,11 +23,11 @@ export const EpisodeThumbnail: React.FC<EpisodeThumbnailProps> = ({
 
   if (!youtubeId) {
     return (
-      <div className={wrapper} aria-hidden="true">
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-200 to-primary-300">
-          <svg className="w-10 h-10 text-primary-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+      <div className={wrapper}>
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-200 to-primary-300 px-4">
+          <span className="font-corporate text-xs uppercase tracking-widest text-text-secondary text-center">
+            Video coming soon
+          </span>
         </div>
       </div>
     );
@@ -38,8 +38,8 @@ export const EpisodeThumbnail: React.FC<EpisodeThumbnailProps> = ({
       href={youtubeWatchUrl(youtubeId)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${wrapper} group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2`}
-      aria-label={`Watch "${title}" on YouTube`}
+      className={`${wrapper} group focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2`}
+      aria-label={`Watch "${title}" on YouTube (opens in a new tab)`}
     >
       <img
         src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
