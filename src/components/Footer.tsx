@@ -31,6 +31,7 @@ export const Footer = () => {
               <div className="text-left">
                 <a href="/about" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">About</a>
                 <a href="/book" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Book</a>
+                <a href="/podcast" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Podcast</a>
                 <a href="/connect" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed">Connect</a>
                 {/* Hidden items - uncomment to show */}
                 {/* <a href="/coaching" className="block text-sm text-text-secondary hover:text-primary-400 transition-colors leading-relaxed mb-1">Coaching</a> */}

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   HeroSection,
   AboutSection,
+  PodcastSection,
   JournalSection,
   BalanceSection,
   CoachingSection,
@@ -13,6 +14,7 @@ export const HomePage = () => {
     <>
       <HeroSection />
       <AboutSection />
+      <PodcastSection />
       <JournalSection />
       <BalanceSection />
       <CoachingSection />

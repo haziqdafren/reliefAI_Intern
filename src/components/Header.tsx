@@ -14,6 +14,7 @@ export const Header = () => {
   const navItems = [
     { path: '/about', label: 'About' },
     { path: '/book', label: 'Book' },
+    { path: '/podcast', label: 'Podcast' },
     { path: '/guidedjournal', label: 'Shop' },
     // { path: '/coaching', label: 'Coach' }, // Hidden - uncomment to show coaching link
     // { path: '/course', label: 'Course' }, // Hidden - uncomment to show course link
@@ -32,7 +33,7 @@ export const Header = () => {
         </Link>
         
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex gap-12 list-none items-center">
+        <ul className="hidden md:flex gap-6 lg:gap-12 list-none items-center">
           {navItems.map((item) => (
             <li key={item.path}>
               <Link 

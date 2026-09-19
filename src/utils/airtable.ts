@@ -12,6 +12,19 @@ interface NewsletterData {
   source?: string;
 }
 
+export interface GuestSuggestionData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  listenerRelationship: string;
+  guestName: string;
+  isRepresentative: string;
+  topics: string;
+  value: string;
+  links?: string;
+  notes?: string;
+}
+
 export const submitToAirtable = async (data: InquiryData): Promise<{ success: boolean; error?: string }> => {
   try {
     const response = await fetch('/api/airtable', {
@@ -36,6 +49,37 @@ export const submitToAirtable = async (data: InquiryData): Promise<{ success: bo
     };
   } catch (error) {
     console.error('Error submitting to Airtable:', error);
+    return {
+      success: false,
+      error: 'Network error. Please try again.',
+    };
+  }
+};
+
+export const submitGuestSuggestion = async (data: GuestSuggestionData): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const response = await fetch('/api/guest-suggestion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.error || 'Failed to submit suggestion',
+      };
+    }
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error submitting guest suggestion:', error);
     return {
       success: false,
       error: 'Network error. Please try again.',
