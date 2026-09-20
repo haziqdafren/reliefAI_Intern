@@ -1,70 +1,90 @@
 import React, { useId } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { EpisodeThumbnail } from './podcast/EpisodeThumbnail';
+import { PodcastArtwork } from './podcast/PodcastArtwork';
+import { ChannelIcon } from './podcast/ChannelIcon';
 import {
-  PODCAST_EPISODES,
+  PODCAST_CHANNELS,
   PODCAST_TITLE,
   PODCAST_TAGLINE,
 } from '../data/podcast';
 
-const FEATURED_COUNT = 3;
-
 /**
- * Home page teaser: the three most recent episodes plus a link to the
- * full podcast page.
+ * Home page podcast section: show artwork beside the show name, tagline and
+ * the platforms it can be followed on.
  */
 export const PodcastSection = () => {
   const headingId = useId();
-  const headerAnimation = useScrollAnimation();
-  const gridAnimation = useScrollAnimation();
+  const artworkAnimation = useScrollAnimation();
+  const contentAnimation = useScrollAnimation();
 
-  const featured = PODCAST_EPISODES.slice(0, FEATURED_COUNT);
-
-  // Nothing to tease yet — the section would render an empty grid.
-  if (featured.length === 0) return null;
+  const primaryChannels = PODCAST_CHANNELS.filter((channel) => channel.isPrimary);
 
   return (
-    <section aria-labelledby={headingId} className="py-20 sm:py-24 bg-[#F7F4EF]" id="podcast">
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
-        <div
-          ref={headerAnimation.ref}
-          className={`text-center mb-12 transition-all duration-700 ${
-            headerAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <p className="font-corporate text-xs uppercase tracking-widest text-text-secondary mb-4">
-            The Podcast
-          </p>
-          <h2 id={headingId} className="font-heading text-3xl sm:text-4xl md:text-5xl font-medium text-text-primary mb-4 leading-tight">
-            {PODCAST_TITLE}
-          </h2>
-          <p className="font-corporate text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-            {PODCAST_TAGLINE}
-          </p>
-        </div>
-
-        <div
-          ref={gridAnimation.ref}
-          className={`transition-all duration-700 delay-150 ${
-            gridAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 lg:gap-8">
-            {featured.map((episode) => (
-              <article key={episode.number}>
-                <EpisodeThumbnail youtubeId={episode.youtubeId} title={episode.title} />
-                <p className="font-corporate text-xs uppercase tracking-widest text-text-secondary mt-4 mb-2">
-                  EP {String(episode.number).padStart(2, '0')}
-                </p>
-                <h3 className="font-heading text-lg sm:text-xl font-medium text-text-primary leading-snug">
-                  {episode.title}
-                </h3>
-              </article>
-            ))}
+    <section
+      aria-labelledby={headingId}
+      className="py-24 sm:py-32 bg-[#F7F4EF]"
+      id="podcast"
+    >
+      <div className="container mx-auto px-5 sm:px-6 max-w-6xl">
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Artwork */}
+          <div
+            ref={artworkAnimation.ref}
+            className={`transition-all duration-700 ${
+              artworkAnimation.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <PodcastArtwork />
           </div>
 
-          <div className="text-center mt-12">
+          {/* Name, tagline and channels */}
+          <div
+            ref={contentAnimation.ref}
+            className={`text-center md:text-left transition-all duration-700 delay-200 ${
+              contentAnimation.isVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 translate-x-8'
+            }`}
+          >
+            <p className="font-corporate text-xs uppercase tracking-[0.2em] text-text-secondary mb-5">
+              The Podcast
+            </p>
+
+            <h2
+              id={headingId}
+              className="font-heading text-4xl sm:text-5xl md:text-6xl font-medium text-text-primary mb-6 leading-tight"
+            >
+              {PODCAST_TITLE}
+            </h2>
+
+            <p className="font-corporate text-base sm:text-lg text-text-secondary leading-relaxed mb-10 font-light">
+              {PODCAST_TAGLINE}
+            </p>
+
+            {primaryChannels.length > 0 && (
+              <ul className="flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4 list-none mb-10">
+                {primaryChannels.map((channel) => (
+                  <li key={channel.label}>
+                    <a
+                      href={channel.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2.5 min-h-[44px] px-5 sm:px-6 py-3 border border-text-primary/50 rounded-full font-corporate text-xs sm:text-sm font-medium text-text-primary transition-all duration-300 hover:border-primary-500 hover:text-primary-500 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
+                    >
+                      {channel.icon && (
+                        <ChannelIcon name={channel.icon} className="w-4 h-4 shrink-0" />
+                      )}
+                      <span aria-hidden="true">{channel.label}</span>
+                      <span className="sr-only">
+                        {`Listen to ${PODCAST_TITLE} on ${channel.label} (opens in a new tab)`}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <Link
               to="/podcast"
               className="inline-flex items-center justify-center min-h-[44px] bg-gradient-to-r from-primary-400 to-primary-500 text-white py-3 px-8 rounded-full text-xs md:text-sm font-corporate font-medium uppercase tracking-wider transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-400/40 shadow-lg shadow-primary-400/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"

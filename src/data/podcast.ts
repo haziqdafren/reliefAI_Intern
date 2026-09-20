@@ -31,20 +31,34 @@ export interface PodcastEpisode {
 export interface PodcastChannel {
   label: string;
   url: string;
+  /** Selects the platform glyph. Channels without one render label-only. */
+  icon?: 'spotify' | 'youtube' | 'apple' | 'amazon';
+  /** Shown in the home page's compact button row. */
+  isPrimary?: boolean;
 }
 
 /** Where the show can be followed. Order is preserved in the UI. */
 export const PODCAST_CHANNELS: PodcastChannel[] = [
-  { label: 'Spotify', url: '#' },
-  { label: 'Apple Podcasts', url: '#' },
-  { label: 'YouTube', url: '#' },
-  { label: 'Amazon Music', url: '#' },
+  { label: 'Spotify', url: '#', icon: 'spotify', isPrimary: true },
+  { label: 'YouTube', url: '#', icon: 'youtube', isPrimary: true },
+  { label: 'Apple Podcast', url: '#', icon: 'apple', isPrimary: true },
+  { label: 'Amazon Music', url: '#', icon: 'amazon' },
 ];
 
 export const PODCAST_TITLE = 'Lead With Balance';
 export const PODCAST_TAGLINE =
   'Conversations with women who lead without losing themselves.';
 export const PODCAST_CADENCE = 'New episodes every other Tuesday';
+
+/**
+ * Show artwork for the home page section. Drop the real image into `public/`
+ * and set `src` to its path (e.g. '/podcast-artwork.jpg'). While `src` is
+ * empty the section falls back to a titled placeholder tile.
+ */
+export const PODCAST_ARTWORK: { src: string; alt: string } = {
+  src: '',
+  alt: `Cover art for the ${PODCAST_TITLE} podcast`,
+};
 
 /** Newest first. The page renders them in this order. */
 export const PODCAST_EPISODES: PodcastEpisode[] = [
