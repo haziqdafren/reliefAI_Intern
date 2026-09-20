@@ -21,6 +21,9 @@ const LISTENER_OPTIONS = [
   'I am not a listener',
 ];
 
+/** Fields kept behind the "Add more detail" disclosure. None are required. */
+const OPTIONAL_FIELDS = ['listenerRelationship', 'isRepresentative', 'links', 'notes'];
+
 const INITIAL_FORM = {
   firstName: '',
   lastName: '',
@@ -71,17 +74,28 @@ export const SuggestGuestForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  /**
+   * Optional fields stay collapsed so the form opens at about one screen.
+   * Everything essential is answerable without expanding this.
+   */
+  const [showOptional, setShowOptional] = useState(false);
   /** Bot trap: hidden from real users, so any value means an automated submit. */
   const [honeypot, setHoneypot] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   /** Restores focus to the submit button when the success modal closes. */
   const submitRef = useRef<HTMLButtonElement>(null);
 
-  /** Move focus to the first field that failed, so the user lands on the problem. */
+  /**
+   * Move focus to the first field that failed, so the user lands on the
+   * problem. Every validated field is in the always-visible part of the form,
+   * but the optional panel is opened first as a safeguard: a field that cannot
+   * be seen cannot be corrected.
+   */
   const focusFirstError = (found: { [key: string]: string }) => {
     const order = ['firstName', 'lastName', 'email', 'guestName', 'topics', 'value'];
     const first = order.find((name) => found[name]);
     if (!first || !formRef.current) return;
+    if (OPTIONAL_FIELDS.includes(first)) setShowOptional(true);
     const field = formRef.current.querySelector<HTMLElement>(`[name="${first}"]`);
     field?.focus();
     field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -169,7 +183,7 @@ export const SuggestGuestForm = () => {
                 onChange={handleChange}
                 className={fieldClasses(Boolean(errors.firstName))}
               />
-              {errors.firstName && <ErrorMessage id={`sg-firstName-error`} message={errors.firstName} />}
+              {errors.firstName && <ErrorMessage id={`sg-firstName-error`} message={errors.firstName} inline />}
             </div>
           </div>
           <div>
@@ -183,7 +197,7 @@ export const SuggestGuestForm = () => {
                 onChange={handleChange}
                 className={fieldClasses(Boolean(errors.lastName))}
               />
-              {errors.lastName && <ErrorMessage id={`sg-lastName-error`} message={errors.lastName} />}
+              {errors.lastName && <ErrorMessage id={`sg-lastName-error`} message={errors.lastName} inline />}
             </div>
           </div>
         </div>
@@ -200,26 +214,8 @@ export const SuggestGuestForm = () => {
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.email))}
             />
-            {errors.email && <ErrorMessage id={`sg-email-error`} message={errors.email} />}
+            {errors.email && <ErrorMessage id={`sg-email-error`} message={errors.email} inline />}
           </div>
-        </div>
-
-        {/* Relationship to the show */}
-        <div>
-          <label htmlFor="sg-listener" className={labelClasses}>
-            What is your relationship with the show?
-          </label>
-          <select
-            id="sg-listener"
-            name="listenerRelationship"
-            value={formData.listenerRelationship}
-            onChange={handleChange}
-            className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
-          >
-            {LISTENER_OPTIONS.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
         </div>
 
         {/* Guest */}
@@ -236,24 +232,8 @@ export const SuggestGuestForm = () => {
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.guestName))}
             />
-            {errors.guestName && <ErrorMessage id={`sg-guestName-error`} message={errors.guestName} />}
+            {errors.guestName && <ErrorMessage id={`sg-guestName-error`} message={errors.guestName} inline />}
           </div>
-        </div>
-
-        <div>
-          <label htmlFor="sg-representative" className={labelClasses}>
-            Are you an official representative of the person you are suggesting?
-          </label>
-          <select
-            id="sg-representative"
-            name="isRepresentative"
-            value={formData.isRepresentative}
-            onChange={handleChange}
-            className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
-          >
-            <option>No</option>
-            <option>Yes</option>
-          </select>
         </div>
 
         <div>
@@ -269,7 +249,7 @@ export const SuggestGuestForm = () => {
               onChange={handleChange}
               className={fieldClasses(Boolean(errors.topics))}
             />
-            {errors.topics && <ErrorMessage id={`sg-topics-error`} message={errors.topics} />}
+            {errors.topics && <ErrorMessage id={`sg-topics-error`} message={errors.topics} inline />}
           </div>
         </div>
 
@@ -283,39 +263,101 @@ export const SuggestGuestForm = () => {
               maxLength={MAX_LENGTHS.value}
               value={formData.value}
               onChange={handleChange}
-              rows={4}
-              className={`${fieldClasses(Boolean(errors.value))} resize-none`}
+              rows={3}
+              className={`${fieldClasses(Boolean(errors.value))} resize-y`}
             />
-            {errors.value && <ErrorMessage id={`sg-value-error`} message={errors.value} />}
+            {errors.value && <ErrorMessage id={`sg-value-error`} message={errors.value} inline />}
           </div>
         </div>
 
-        <div>
-          <label htmlFor="sg-links" className={labelClasses}>
-            Helpful links (articles, videos, books, website)
-          </label>
-          <textarea
-            {...a11yProps('links', errors)}
-            maxLength={MAX_LENGTHS.links}
-            value={formData.links}
-            onChange={handleChange}
-            rows={3}
-            className={`${fieldClasses(false)} resize-none`}
-          />
-        </div>
+        {/* Optional detail, collapsed by default to keep the form short. */}
+        <div className="border-t border-primary-300/60 pt-6">
+          <button
+            type="button"
+            onClick={() => setShowOptional((open) => !open)}
+            aria-expanded={showOptional}
+            aria-controls="sg-optional"
+            className="inline-flex items-center gap-2 font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded"
+          >
+            <span className="border-b border-text-primary/70 pb-0.5">
+              {showOptional ? 'Hide extra detail' : 'Add more detail (optional)'}
+            </span>
+            <svg
+              className={`w-3.5 h-3.5 transition-transform duration-300 ${showOptional ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-        <div>
-          <label htmlFor="sg-notes" className={labelClasses}>
-            Anything else worth knowing?
-          </label>
-          <textarea
-            {...a11yProps('notes', errors)}
-            maxLength={MAX_LENGTHS.notes}
-            value={formData.notes}
-            onChange={handleChange}
-            rows={3}
-            className={`${fieldClasses(false)} resize-none`}
-          />
+          <div id="sg-optional" hidden={!showOptional} className="space-y-6 mt-6">
+            <div>
+              <label htmlFor="sg-links" className={labelClasses}>
+                Helpful links (articles, videos, books, website)
+              </label>
+              <textarea
+                {...a11yProps('links', errors)}
+                maxLength={MAX_LENGTHS.links}
+                value={formData.links}
+                onChange={handleChange}
+                rows={2}
+                className={`${fieldClasses(false)} resize-y`}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="sg-notes" className={labelClasses}>
+                Anything else worth knowing?
+              </label>
+              <textarea
+                {...a11yProps('notes', errors)}
+                maxLength={MAX_LENGTHS.notes}
+                value={formData.notes}
+                onChange={handleChange}
+                rows={2}
+                className={`${fieldClasses(false)} resize-y`}
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="sg-listenerRelationship" className={labelClasses}>
+                  Your relationship with the show
+                </label>
+                <select
+                  id="sg-listenerRelationship"
+                  name="listenerRelationship"
+                  value={formData.listenerRelationship}
+                  onChange={handleChange}
+                  className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
+                >
+                  {LISTENER_OPTIONS.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="sg-isRepresentative" className={labelClasses}>
+                  Do you represent them officially?
+                </label>
+                <select
+                  id="sg-isRepresentative"
+                  name="isRepresentative"
+                  value={formData.isRepresentative}
+                  onChange={handleChange}
+                  className={`${fieldClasses(false)} appearance-none bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232C2C2C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] bg-no-repeat bg-[length:1rem] bg-[right_1rem_center] pr-10`}
+                >
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
 
         {errors.submit && (

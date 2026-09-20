@@ -5,14 +5,29 @@ interface ErrorMessageProps {
   className?: string;
   /** Links the message to its field via aria-describedby. */
   id?: string;
+  /**
+   * Render in the normal document flow instead of floating below the field.
+   * Floating messages overlap whatever follows them, which hides the next
+   * field's label in a densely stacked form.
+   */
+  inline?: boolean;
 }
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, className = '', id }) => {
+export const ErrorMessage: React.FC<ErrorMessageProps> = ({
+  message,
+  className = '',
+  id,
+  inline = false,
+}) => {
+  const position = inline ? 'mt-2' : 'absolute top-full left-0 right-0 mt-2 z-10';
+
   return (
-    <div id={id} role="alert" className={`absolute top-full left-0 right-0 mt-2 z-10 ${className}`}>
+    <div id={id} role="alert" className={`${position} ${className}`}>
       <div className="bg-white border border-red-200 rounded-lg shadow-lg p-3 relative">
-        {/* Arrow pointing up */}
-        <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-red-200 transform rotate-45"></div>
+        {/* Arrow pointing up at the field the message belongs to */}
+        {!inline && (
+          <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-red-200 transform rotate-45"></div>
+        )}
         
         <div className="flex items-start gap-3">
           {/* Error Icon */}
