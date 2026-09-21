@@ -110,7 +110,8 @@ const parseFeed = (xml) => {
 };
 
 module.exports = async (req, res) => {
-  if (req.method !== 'GET') {
+  // HEAD is a GET without a body: uptime checks and link previews use it.
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
