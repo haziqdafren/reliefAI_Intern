@@ -3,14 +3,15 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { ChannelLinks } from '../components/podcast/ChannelLinks';
 import { EpisodeRow } from '../components/podcast/EpisodeRow';
 import { SuggestGuestForm } from '../components/podcast/SuggestGuestForm';
+import { useEpisodes } from '../hooks/useEpisodes';
 import {
-  PODCAST_EPISODES,
   PODCAST_TITLE,
   PODCAST_TAGLINE,
   PODCAST_CADENCE,
 } from '../data/podcast';
 
 export const PodcastPage = () => {
+  const episodes = useEpisodes();
   const heroAnimation = useScrollAnimation();
   const episodesAnimation = useScrollAnimation();
   const suggestAnimation = useScrollAnimation();
@@ -65,10 +66,10 @@ export const PodcastPage = () => {
             Episodes
           </h2>
 
-          {PODCAST_EPISODES.length > 0 ? (
+          {episodes.length > 0 ? (
             <div>
-              {PODCAST_EPISODES.map((episode) => (
-                <EpisodeRow key={episode.number} episode={episode} />
+              {episodes.map((episode) => (
+                <EpisodeRow key={episode.youtubeId || episode.number} episode={episode} />
               ))}
             </div>
           ) : (
