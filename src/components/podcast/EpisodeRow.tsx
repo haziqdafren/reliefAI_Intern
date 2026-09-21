@@ -93,9 +93,18 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
               isExpanded ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <p className="font-corporate text-base text-text-secondary leading-relaxed">
-              {episode.description}
-            </p>
+            {/* Source descriptions use single newlines as list breaks and
+                blank lines as paragraph breaks; both are lost in a single
+                <p>, so each line becomes its own paragraph. */}
+            <div className="font-corporate text-base text-text-secondary leading-relaxed space-y-3">
+              {episode.description
+                .split('\n')
+                .map((line) => line.trim())
+                .filter(Boolean)
+                .map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
+            </div>
 
             {episode.resources && episode.resources.length > 0 && (
               <div className="mt-6">
@@ -105,9 +114,12 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
                 <ul className="space-y-1 list-none">
                   {episode.resources.map((resource) => (
                     <li key={resource.label}>
+                      {/* These live on Google Drive and Kit, so `download`
+                          would be ignored cross-origin — open them instead. */}
                       <a
                         href={resource.url}
-                        {...(resource.url && resource.url !== '#' ? { download: true } : {})}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 min-h-[44px] font-corporate text-sm text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2 rounded-sm"
                       >
                         <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -116,8 +128,11 @@ export const EpisodeRow: React.FC<EpisodeRowProps> = ({ episode }) => {
                         <span className="underline decoration-text-primary/60 underline-offset-4">
                           {resource.label}
                         </span>
-                        <span className="text-text-secondary text-xs">
+                        <span className="text-text-secondary text-xs" aria-hidden="true">
                           ({resource.meta ?? 'download'})
+                        </span>
+                        <span className="sr-only">
+                          {`${resource.meta ?? 'download'} (opens in a new tab)`}
                         </span>
                       </a>
                     </li>

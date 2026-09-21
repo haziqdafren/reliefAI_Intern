@@ -27,12 +27,22 @@ export const PodcastArtwork = () => {
 
   return (
     <div className={frame}>
-      <img
-        src={PODCAST_ARTWORK.src}
-        alt={PODCAST_ARTWORK.alt}
-        loading="lazy"
-        className="w-full h-full object-cover"
-      />
+      <picture>
+        {PODCAST_ARTWORK.webp && (
+          <source srcSet={PODCAST_ARTWORK.webp} type="image/webp" />
+        )}
+        {/*
+          Eager: this sits directly below the hero, so a lazy image would
+          visibly pop in as the section scrolls into view.
+        */}
+        <img
+          src={PODCAST_ARTWORK.src}
+          alt={PODCAST_ARTWORK.alt}
+          width={800}
+          height={800}
+          className="w-full h-full object-cover"
+        />
+      </picture>
     </div>
   );
 };

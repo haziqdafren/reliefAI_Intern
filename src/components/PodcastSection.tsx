@@ -4,7 +4,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { PodcastArtwork } from './podcast/PodcastArtwork';
 import { ChannelIcon } from './podcast/ChannelIcon';
 import {
-  PODCAST_CHANNELS,
+  activeChannels,
   PODCAST_TITLE,
   PODCAST_TAGLINE,
 } from '../data/podcast';
@@ -18,7 +18,7 @@ export const PodcastSection = () => {
   const artworkAnimation = useScrollAnimation();
   const contentAnimation = useScrollAnimation();
 
-  const primaryChannels = PODCAST_CHANNELS.filter((channel) => channel.isPrimary);
+  const primaryChannels = activeChannels().filter((channel) => channel.isPrimary);
 
   return (
     <section

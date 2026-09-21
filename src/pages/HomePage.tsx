@@ -13,8 +13,8 @@ export const HomePage = () => {
   return (
     <>
       <HeroSection />
-      <AboutSection />
       <PodcastSection />
+      <AboutSection />
       <JournalSection />
       <BalanceSection />
       <CoachingSection />

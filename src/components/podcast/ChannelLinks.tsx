@@ -1,5 +1,5 @@
 import React from 'react';
-import { PODCAST_CHANNELS } from '../../data/podcast';
+import { activeChannels } from '../../data/podcast';
 
 /**
  * Outlined pills linking the show on each listening platform.
@@ -7,7 +7,7 @@ import { PODCAST_CHANNELS } from '../../data/podcast';
  */
 export const ChannelLinks = () => (
   <ul className="flex flex-wrap justify-center gap-3 sm:gap-4 list-none">
-    {PODCAST_CHANNELS.map((channel) => (
+    {activeChannels().map((channel) => (
       <li key={channel.label}>
         <a
           href={channel.url}
