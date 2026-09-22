@@ -45,9 +45,9 @@ export interface PodcastChannel {
  * rendered as a button that goes nowhere — fill the url in to reveal it.
  */
 export const PODCAST_CHANNELS: PodcastChannel[] = [
-  { label: 'Spotify', url: '#', icon: 'spotify', isPrimary: true },
+  { label: 'Spotify', url: 'https://open.spotify.com/show/5mr3M8S0NGuLCtvZAvWhL3', icon: 'spotify', isPrimary: true },
   { label: 'YouTube', url: 'https://www.youtube.com/@LeadWithBalance', icon: 'youtube', isPrimary: true },
-  { label: 'Apple Podcast', url: '#', icon: 'apple', isPrimary: true },
+  { label: 'Apple Podcast', url: 'https://podcasts.apple.com/us/podcast/lead-with-balance-with-jessie-li/id6802936159', icon: 'apple', isPrimary: true },
   { label: 'Amazon Music', url: '#', icon: 'amazon' },
 ];
 

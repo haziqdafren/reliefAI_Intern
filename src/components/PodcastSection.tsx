@@ -28,14 +28,20 @@ export const PodcastSection = () => {
     >
       <div className="container mx-auto px-5 sm:px-6 max-w-6xl">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Artwork */}
+          {/* Artwork — links through to the full podcast page */}
           <div
             ref={artworkAnimation.ref}
             className={`transition-all duration-700 ${
               artworkAnimation.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
-            <PodcastArtwork />
+            <Link
+              to="/podcast"
+              aria-label={`${PODCAST_TITLE} — see all episodes`}
+              className="block rounded-2xl transition-transform duration-500 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-4"
+            >
+              <PodcastArtwork />
+            </Link>
           </div>
 
           {/* Name, tagline and channels */}
@@ -51,11 +57,18 @@ export const PodcastSection = () => {
               The Podcast
             </p>
 
+            {/* Sized to hold the title on one line down to narrow phones,
+                where the wider tracking would otherwise force a wrap. */}
             <h2
               id={headingId}
-              className="font-heading text-4xl sm:text-5xl md:text-6xl font-medium text-text-primary mb-6 leading-tight"
+              className="mb-6 leading-tight"
             >
-              {PODCAST_TITLE}
+              <Link
+                to="/podcast"
+                className="font-heading text-2xl sm:text-3xl md:text-[1.75rem] lg:text-[2.25rem] xl:text-[2.75rem] font-medium uppercase tracking-tight whitespace-nowrap text-text-primary transition-colors duration-300 hover:text-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-4 rounded-sm"
+              >
+                {PODCAST_TITLE}
+              </Link>
             </h2>
 
             <p className="font-corporate text-base sm:text-lg text-text-secondary leading-relaxed mb-10 font-light">
