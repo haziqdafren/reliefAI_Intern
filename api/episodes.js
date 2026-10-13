@@ -10,13 +10,13 @@
  * keyed by video ID.
  */
 
+const { fetchFeedWithRetry } = require('./_fetchFeed');
+
 const CHANNEL_ID = process.env.PODCAST_YOUTUBE_CHANNEL_ID || 'UClg8e8IZ9OnHOaao-zOPrXA';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
 
 /** How long a response stays fresh at the CDN edge. */
 const CACHE_SECONDS = 3600;
-/** Give up rather than hold a serverless invocation open. */
-const FETCH_TIMEOUT_MS = 5000;
 
 /**
  * Curated downloads, keyed by YouTube video ID. The feed cannot supply these:
@@ -115,16 +115,8 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
   try {
-    const response = await fetch(FEED_URL, { signal: controller.signal });
-    if (!response.ok) {
-      throw new Error(`Feed responded ${response.status}`);
-    }
-
-    const episodes = parseFeed(await response.text());
+    const episodes = parseFeed(await fetchFeedWithRetry(FEED_URL));
     if (episodes.length === 0) {
       throw new Error('Feed contained no usable entries');
     }
@@ -140,7 +132,5 @@ module.exports = async (req, res) => {
     // The page falls back to its bundled copy, so log and fail quietly.
     console.error('Episode feed unavailable:', error);
     return res.status(503).json({ error: 'Episode list is unavailable right now.' });
-  } finally {
-    clearTimeout(timeout);
   }
 };
