@@ -11,6 +11,7 @@
  */
 
 const { fetchFeedWithRetry } = require('./_fetchFeed');
+const { trimDescription } = require('./_trimDescription');
 
 const CHANNEL_ID = process.env.PODCAST_YOUTUBE_CHANNEL_ID || 'UClg8e8IZ9OnHOaao-zOPrXA';
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
@@ -58,23 +59,6 @@ const decodeEntities = (text) =>
 const firstMatch = (source, pattern) => {
   const found = source.match(pattern);
   return found ? decodeEntities(found[1]) : '';
-};
-
-/**
- * Drop the trailing chapter list and social-link block. The page shows the
- * story and takeaways only: YouTube renders chapters in its own player and the
- * site footer already carries the social links.
- */
-const TRAILING_BLOCK = /^\s*(chapters?\s*:?\s*$|follow\s+[^\n]*:\s*$|get to know us\s*:?\s*$|lead with balance\s*:\s*$|take .{0,80}quiz here\s*:|take dr\.? .{0,60}quiz\s*:?\s*$)/i;
-const TIMESTAMP_LINE = /^\s*\d{1,2}:\d{2}/;
-
-const trimDescription = (description) => {
-  const kept = [];
-  for (const line of description.split('\n')) {
-    if (TRAILING_BLOCK.test(line) || TIMESTAMP_LINE.test(line)) break;
-    kept.push(line.trimEnd());
-  }
-  return kept.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 };
 
 const parseFeed = (xml) => {
